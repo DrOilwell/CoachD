@@ -1,6 +1,6 @@
 // Cloudflare Pages Function: /api/comments
 // GET  /api/comments?post=<postId>  -> approved comments for a blog post
-// POST /api/comments                -> new comment, shown right away (held only if it contains a link)
+// POST /api/comments                -> new comment: members' go live, everyone else's wait for approval
 // Comments live in the D1 database bound as `DB` (table: comments).
 
 const ALLOWED_HOSTS = [
@@ -30,6 +30,11 @@ function json(body, status = 200, origin = null, cache = "no-store") {
   return new Response(JSON.stringify(body), { status, headers });
 }
 
+async function sha256(text) {
+  const buf = await crypto.subtle.digest("SHA-256", new TextEncoder().encode(text));
+  return [...new Uint8Array(buf)].map(b => b.toString(16).padStart(2, "0")).join("");
+}
+
 function clean(value, max) {
   return String(value ?? "").replace(/[\u0000-\u0008\u000B\u000C\u000E-\u001F]/g, "").trim().slice(0, max);
 }
@@ -57,7 +62,7 @@ export async function onRequestGet({ request, env }) {
   if (!env.DB) return json({ ok: false, error: "Database not connected." }, 500, origin);
 
   const { results } = await env.DB.prepare(
-    "SELECT name, comment, reply, created_at FROM comments WHERE post_id = ?1 AND approved = 1 ORDER BY created_at ASC LIMIT 200"
+    "SELECT name, comment, reply, member, created_at FROM comments WHERE post_id = ?1 AND approved = 1 ORDER BY created_at ASC LIMIT 200"
   ).bind(post).all();
 
   return json({ ok: true, comments: results || [] }, 200, origin, "no-store");
@@ -79,27 +84,40 @@ export async function onRequestPost({ request, env }) {
   if (clean(data.website, 200)) return send({ ok: true });
 
   const post = clean(data.post, 60);
-  const name = clean(data.name, 60);
+  let name = clean(data.name, 60);
   const comment = clean(data.comment, 1500);
+  const memberKey = clean(data.memberKey, 128);
 
   if (!POST_ID_RE.test(post)) return send({ ok: false, error: "unknown post" }, 400);
-  if (!name) return send({ ok: false, error: "Please add your name." }, 400);
   if (!comment) return send({ ok: false, error: "Please write a comment." }, 400);
   if (!env.DB) return send({ ok: false, error: "Database not connected." }, 500);
 
-  // Comments go live right away. Ones containing links (the usual sign of spam) wait for review.
-  const hasLink = /(https?:\/\/|www\.|\b[a-z0-9-]+\.(com|net|org|io|ru|xyz|info|biz|link|click)\b)/i.test(name + " " + comment);
-  const approved = hasLink ? 0 : 1;
+  // Members (valid key from the Join page) post live under their member name.
+  let isMember = false;
+  if (/^[a-f0-9]{64}$/.test(memberKey)) {
+    const member = await env.DB.prepare(
+      `SELECT m.id, m.name FROM member_keys k JOIN members m ON m.id = k.member_id
+       WHERE k.token_hash = ?1 AND m.status = 'active'`
+    ).bind(await sha256(memberKey)).first();
+    if (member) {
+      isMember = true;
+      name = member.name;
+      await env.DB.prepare("UPDATE members SET last_seen = datetime('now') WHERE id = ?1").bind(member.id).run();
+    }
+  }
+  if (!name) return send({ ok: false, error: "Please add your name." }, 400);
+
+  const approved = isMember ? 1 : 0;
 
   try {
     await env.DB.prepare(
-      "INSERT INTO comments (post_id, name, comment, approved) VALUES (?1, ?2, ?3, ?4)"
-    ).bind(post, name, comment, approved).run();
+      "INSERT INTO comments (post_id, name, comment, approved, member) VALUES (?1, ?2, ?3, ?4, ?5)"
+    ).bind(post, name, comment, approved, isMember ? 1 : 0).run();
   } catch (err) {
     return send({ ok: false, error: "Could not save your comment." }, 500);
   }
 
-  return send({ ok: true, pending: !approved });
+  return send({ ok: true, pending: !approved, member: isMember });
 }
 
 export async function onRequest() {

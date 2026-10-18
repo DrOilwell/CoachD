@@ -12,7 +12,7 @@ CREATE TABLE IF NOT EXISTS messages (
 );
 CREATE INDEX IF NOT EXISTS idx_messages_created ON messages (created_at DESC);
 
--- Blog comments (shown on the site only after approved = 1)
+-- Blog comments (members' go live; everyone else's need approved = 1)
 CREATE TABLE IF NOT EXISTS comments (
   id INTEGER PRIMARY KEY AUTOINCREMENT,
   created_at TEXT NOT NULL DEFAULT (datetime('now')),
@@ -20,9 +20,35 @@ CREATE TABLE IF NOT EXISTS comments (
   name TEXT NOT NULL,
   comment TEXT NOT NULL,
   approved INTEGER NOT NULL DEFAULT 0,
-  reply TEXT
+  reply TEXT,
+  member INTEGER NOT NULL DEFAULT 0
 );
 CREATE INDEX IF NOT EXISTS idx_comments_post ON comments (post_id, approved, created_at);
+
+-- Members (free: name + email). Only a hash of each device key is stored.
+CREATE TABLE IF NOT EXISTS members (
+  id INTEGER PRIMARY KEY AUTOINCREMENT,
+  created_at TEXT NOT NULL DEFAULT (datetime('now')),
+  last_seen TEXT,
+  name TEXT NOT NULL,
+  email TEXT NOT NULL UNIQUE,
+  token_hash TEXT NOT NULL,
+  updates INTEGER NOT NULL DEFAULT 0,
+  status TEXT NOT NULL DEFAULT 'active'
+);
+CREATE TABLE IF NOT EXISTS member_keys (
+  id INTEGER PRIMARY KEY AUTOINCREMENT,
+  created_at TEXT NOT NULL DEFAULT (datetime('now')),
+  member_id INTEGER NOT NULL REFERENCES members(id) ON DELETE CASCADE,
+  token_hash TEXT NOT NULL UNIQUE
+);
+
+-- MEMBERS
+-- All members:          SELECT id, name, email, updates, created_at FROM members ORDER BY created_at DESC;
+-- Want post emails:     SELECT name, email FROM members WHERE updates = 1 AND status = 'active';
+-- Block a member:       UPDATE members SET status = 'blocked' WHERE email = 'person@example.com';
+-- Delete on request:    DELETE FROM member_keys WHERE member_id = (SELECT id FROM members WHERE email = 'person@example.com');
+--                       DELETE FROM members WHERE email = 'person@example.com';
 
 -- MESSAGES
 -- See newest:          SELECT * FROM messages ORDER BY created_at DESC LIMIT 50;

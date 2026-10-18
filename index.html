@@ -170,6 +170,13 @@ dialog::backdrop { background: rgba(10,15,12,.45); backdrop-filter: blur(3px); }
 .muted { color: var(--muted); }
 .small { font-size: 0.82rem; }
 
+.cm-as { font-size: 0.92rem; font-weight: 600; }
+.badge { display: inline-block; font-size: 0.7rem; font-weight: 800; text-transform: uppercase; letter-spacing: 0.06em; background: var(--accent-soft); color: var(--accent); border-radius: 999px; padding: 2px 8px; }
+.check { display: flex; gap: 10px; align-items: center; font-size: 0.92rem; cursor: pointer; }
+.check input { width: 18px; height: 18px; accent-color: var(--accent); }
+.member-card { background: var(--accent-soft); border-color: transparent; }
+.member-card .btn { justify-self: start; }
+
 /* About sign-off and support */
 .signoff { font-weight: 700; }
 .signoff span { color: var(--accent); }
@@ -199,6 +206,7 @@ footer .wrap { padding-block: 24px; display: grid; gap: 6px; font-size: 0.85rem;
       <button class="tab" role="tab" data-tab="burners" aria-selected="false">Four Burners</button>
       <button class="tab" role="tab" data-tab="science" aria-selected="false">The Science</button>
       <button class="tab" role="tab" data-tab="about" aria-selected="false">About</button>
+      <button class="tab" role="tab" data-tab="join" aria-selected="false" id="join-tab">Join free</button>
       <button class="tab" role="tab" data-tab="contact" aria-selected="false">Contact</button>
     </nav>
   </div>
@@ -215,6 +223,7 @@ footer .wrap { padding-block: 24px; display: grid; gap: 6px; font-size: 0.85rem;
       <div class="cta-row">
         <button class="btn primary" data-go="blog">Read the blog</button>
         <button class="btn ghost" data-go="nutrition">See how I eat</button>
+        <button class="btn ghost" data-go="join" data-join-cta>Join free</button>
         <button class="btn ghost" data-go="contact">Ask me a question</button>
       </div>
     </div>
@@ -349,6 +358,43 @@ footer .wrap { padding-block: 24px; display: grid; gap: 6px; font-size: 0.85rem;
     </div>
   </section>
 
+  <!-- JOIN -->
+  <section class="page" id="join" role="tabpanel" hidden>
+    <div class="page-head"><h2>Join free</h2><p class="sub">Become a member with just your name and email. Members' comments go live instantly.</p></div>
+    <div class="two">
+      <div class="card member-card" id="member-in" hidden>
+        <span class="label">Member</span>
+        <h3 id="member-hello">You're in.</h3>
+        <p>Your comments now go live right away on this device. Joining again with the same email on another device works too.</p>
+        <button class="btn ghost" id="member-out" type="button">Sign out on this device</button>
+      </div>
+      <form class="card form" id="join-form" novalidate>
+        <div class="field">
+          <label for="j-name">Name</label>
+          <input id="j-name" name="name" type="text" maxlength="60" autocomplete="name" required placeholder="First name is fine">
+        </div>
+        <div class="field">
+          <label for="j-email">Email</label>
+          <input id="j-email" name="email" type="email" maxlength="200" autocomplete="email" required placeholder="you@example.com">
+        </div>
+        <label class="check" for="j-updates"><input id="j-updates" name="updates" type="checkbox"> <span>Email me when new posts go up</span></label>
+        <div class="hp" aria-hidden="true"><label for="j-website">Website</label><input id="j-website" name="website" type="text" tabindex="-1" autocomplete="off"></div>
+        <button class="btn primary" type="submit" id="j-send">Join free</button>
+        <p class="form-status" id="j-status" role="status" aria-live="polite"></p>
+        <p class="muted small">Already a member? Enter the same email to sign in on this device.</p>
+      </form>
+      <div class="card">
+        <h3>What members get</h3>
+        <ul class="ticklist">
+          <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12.5l4.5 4.5L19 7.5"/></svg><span>Your comments post instantly, with a Member badge.</span></li>
+          <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12.5l4.5 4.5L19 7.5"/></svg><span>Optional email when new posts go up.</span></li>
+          <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12.5l4.5 4.5L19 7.5"/></svg><span>Your email is never shown, shared or sold. Ask anytime and it's deleted.</span></li>
+        </ul>
+        <p class="note">Not a member? You can still comment. Your comment just waits for a quick review first.</p>
+      </div>
+    </div>
+  </section>
+
   <!-- CONTACT -->
   <section class="page" id="contact" role="tabpanel" hidden>
     <div class="page-head"><h2>Contact</h2><p class="sub">Questions, comments, coaching or collaboration. Send a note and I'll get back to you.</p></div>
@@ -412,7 +458,8 @@ footer .wrap { padding-block: 24px; display: grid; gap: 6px; font-size: 0.85rem;
       <h3>Comments</h3>
       <div id="cm-list" class="cm-list"><p class="muted">Loading comments…</p></div>
       <form id="cm-form" class="form" novalidate>
-        <div class="field">
+        <p class="cm-as" id="cm-as" hidden></p>
+        <div class="field" id="cm-name-field">
           <label for="cm-name">Name</label>
           <input id="cm-name" name="name" type="text" maxlength="60" required placeholder="First name is fine">
         </div>
@@ -423,6 +470,7 @@ footer .wrap { padding-block: 24px; display: grid; gap: 6px; font-size: 0.85rem;
         <div class="hp" aria-hidden="true"><label for="cm-website">Website</label><input id="cm-website" name="website" type="text" tabindex="-1" autocomplete="off"></div>
         <button class="btn primary" type="submit" id="cm-send">Post comment</button>
         <p class="form-status" id="cm-status" role="status" aria-live="polite"></p>
+        <p class="muted small" id="cm-note">Not a member? Your comment will appear after a quick review. <button type="button" class="link-btn" data-join-link>Join free</button> to post instantly.</p>
         <p class="muted small">Please be kind and keep medical details private.</p>
       </form>
     </div>
@@ -614,7 +662,9 @@ async function loadComments(postId) {
       const head = document.createElement("div"); head.className = "cm-head";
       const n = document.createElement("strong"); n.textContent = c.name;
       const t = document.createElement("span"); t.textContent = fmtDate(c.created_at);
-      head.append(n, t);
+      head.append(n);
+      if (c.member) { const b = document.createElement("span"); b.className = "badge"; b.textContent = "Member"; head.append(b); }
+      head.append(t);
       const body = document.createElement("p"); body.textContent = c.comment;
       el.append(head, body);
       if (c.reply) {
@@ -631,6 +681,8 @@ cmForm.addEventListener("submit", async (e) => {
   e.preventDefault();
   const data = Object.fromEntries(new FormData(cmForm).entries());
   data.post = currentPostId;
+  const m = getMember();
+  if (m) { data.memberKey = m.token; data.name = m.name; }
   const setS = (t, k) => { cmStatus.textContent = t; cmStatus.className = "form-status" + (k ? " " + k : ""); };
   if (!(data.name || "").trim()) { setS("Please add your name.", "err"); return; }
   if (!(data.comment || "").trim()) { setS("Please write a comment.", "err"); return; }
@@ -640,8 +692,9 @@ cmForm.addEventListener("submit", async (e) => {
     const out = await res.json().catch(() => ({}));
     if (!res.ok || !out.ok) throw new Error(out.error || "failed");
     cmForm.reset();
+    if (m && !out.member) { setMember(null); renderMember(); }
     if (out.pending) {
-      setS("Thanks! Comments with links are reviewed first, so yours will appear shortly.", "ok");
+      setS("Thanks! Your comment will appear after a quick review. Join free to post instantly next time.", "ok");
     } else {
       loadComments(data.post);
       setS("Posted. Thanks for joining the conversation!", "ok");
@@ -652,6 +705,51 @@ cmForm.addEventListener("submit", async (e) => {
     cmSend.disabled = false; cmSend.textContent = "Post comment";
   }
 });
+
+// Membership (kept in this browser only)
+const MEMBER_KEY = "naw-member";
+function getMember() { try { const v = JSON.parse(localStorage.getItem(MEMBER_KEY) || "null"); return v && v.token && v.name ? v : null; } catch (e) { return null; } }
+function setMember(v) { try { v ? localStorage.setItem(MEMBER_KEY, JSON.stringify(v)) : localStorage.removeItem(MEMBER_KEY); } catch (e) {} }
+function renderMember() {
+  const m = getMember();
+  document.getElementById("member-in").hidden = !m;
+  document.getElementById("join-form").hidden = !!m;
+  if (m) document.getElementById("member-hello").textContent = "You're in, " + m.name + ".";
+  document.getElementById("join-tab").textContent = m ? "Member" : "Join free";
+  document.querySelectorAll("[data-join-cta]").forEach(b => b.hidden = !!m);
+  const as = document.getElementById("cm-as");
+  as.hidden = !m;
+  if (m) { as.innerHTML = ""; as.append("Posting as " + m.name + " "); const b = document.createElement("span"); b.className = "badge"; b.textContent = "Member"; as.append(b); }
+  document.getElementById("cm-name-field").hidden = !!m;
+  document.getElementById("cm-note").hidden = !!m;
+}
+document.querySelectorAll("[data-join-link]").forEach(b => b.addEventListener("click", () => { dlg.close(); show("join"); }));
+document.getElementById("member-out").addEventListener("click", () => { setMember(null); renderMember(); });
+const joinForm = document.getElementById("join-form");
+const jStatus = document.getElementById("j-status");
+const jSend = document.getElementById("j-send");
+joinForm.addEventListener("submit", async (e) => {
+  e.preventDefault();
+  const fd = new FormData(joinForm);
+  const data = { name: (fd.get("name") || "").trim(), email: (fd.get("email") || "").trim(), updates: fd.get("updates") === "on", website: fd.get("website") || "" };
+  const setS = (t, k) => { jStatus.textContent = t; jStatus.className = "form-status" + (k ? " " + k : ""); };
+  if (!data.name) { setS("Please add your name.", "err"); return; }
+  if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(data.email)) { setS("Please enter a valid email.", "err"); return; }
+  jSend.disabled = true; jSend.textContent = "Joining…"; setS("");
+  try {
+    const res = await fetch(apiBase() + "/api/subscribe", { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify(data) });
+    const out = await res.json().catch(() => ({}));
+    if (!res.ok || !out.ok) throw new Error(out.error || "Couldn't join right now. Try again in a moment.");
+    setMember({ name: out.name, token: out.token });
+    joinForm.reset();
+    renderMember();
+  } catch (err) {
+    setS(err.message && !/fetch|network/i.test(err.message) ? err.message : "Couldn't join right now. Try again in a moment.", "err");
+  } finally {
+    jSend.disabled = false; jSend.textContent = "Join free";
+  }
+});
+renderMember();
 
 // Buy me a coffee
 if (COFFEE_URL) {
