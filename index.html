@@ -59,10 +59,7 @@ button { font: inherit; color: inherit; }
 .topbar { position: sticky; top: env(safe-area-inset-top, 0px); z-index: 20; background: color-mix(in srgb, var(--bg) 88%, transparent); backdrop-filter: saturate(180%) blur(16px); -webkit-backdrop-filter: saturate(180%) blur(16px); border-bottom: 1px solid var(--line); }
 .bar { display: flex; align-items: center; justify-content: space-between; gap: 12px; padding-block: 12px 6px; }
 .brand { display: flex; align-items: center; gap: 10px; }
-.brand-logo { width: 42px; height: 42px; border-radius: 50%; background: #fff; padding: 2px; box-shadow: 0 0 0 2px var(--accent); flex: none; }
-.brand-logo { width: 52px; height: 52px; flex: none; border-radius: 50%; }
-:root[data-theme="dark"] .brand-logo { background: #fff; padding: 3px; }
-@media (prefers-color-scheme: dark) { :root:not([data-theme="light"]) .brand-logo { background: #fff; padding: 3px; } }
+.brand-logo { width: 52px; height: 52px; flex: none; object-fit: contain; }
 .brand-text { display: grid; line-height: 1.15; }
 .brand-text { gap: 2px; }
 .brand-text strong { font-weight: 800; font-size: clamp(1.35rem, 5.2vw, 2.24rem); letter-spacing: -0.02em; color: var(--accent); line-height: 1.05; -webkit-text-stroke: 0.9px currentColor; paint-order: stroke fill; }
