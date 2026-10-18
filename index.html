@@ -345,9 +345,7 @@ footer .wrap { padding-block: 24px; display: grid; gap: 6px; font-size: 0.85rem;
     <nav class="tabs" id="tabs-nav" role="tablist" aria-label="Sections">
       <button class="tab" role="tab" data-tab="home" aria-selected="true">Home</button>
       <button class="tab" role="tab" data-tab="blog" aria-selected="false">Blog</button>
-      <button class="tab" role="tab" data-tab="nutrition" aria-selected="false">Nutrition</button>
-      <button class="tab" role="tab" data-tab="day" aria-selected="false">My Day</button>
-      <button class="tab" role="tab" data-tab="burners" aria-selected="false">Four Burners</button>
+      <button class="tab" role="tab" data-tab="nutrition" aria-selected="false">My Day &amp; Nutrition</button>
       <button class="tab" role="tab" data-tab="science" aria-selected="false">The Science</button>
       <button class="tab" role="tab" data-tab="about" aria-selected="false">About</button>
       <button class="tab" role="tab" data-tab="join" aria-selected="false" id="join-tab">Join free</button>
@@ -389,9 +387,29 @@ footer .wrap { padding-block: 24px; display: grid; gap: 6px; font-size: 0.85rem;
     <div class="grid" id="posts"></div>
   </section>
 
-  <!-- NUTRITION -->
+  <!-- MY DAY & NUTRITION -->
   <section class="page" id="nutrition" role="tabpanel" hidden>
-    <div class="page-head"><h2>Nutrition</h2><p class="sub">No breakfast. A 16-hour fast, an 8-hour eating window, whole foods and no alcohol.</p></div>
+    <div class="page-head"><h2>My Day &amp; Nutrition</h2><p class="sub">How I fit five miles into a full day, and how I eat to fuel it.</p></div>
+
+    <div class="block" id="day-part">
+      <h3 class="pane-title">My Day</h3>
+      <p class="sub">Five miles split into three walks, fitted around duty, practice and family.</p>
+    <div class="list">
+      <div class="row"><span class="t">5:00</span><span class="d">Wake up, water, 5 minutes of mobility</span></div>
+      <div class="row"><span class="t">5:15</span><span class="d">Walk 1: 3 miles, fasted<small>Quiet time to think or pray</small></span></div>
+      <div class="row"><span class="t">6:30</span><span class="d">Group PT / Personal PT</span></div>
+      <div class="row"><span class="t">9:00</span><span class="d">Duty day<small>Hardest work first</small></span></div>
+      <div class="row"><span class="t">12:00</span><span class="d">First meal, then Walk 2: 1 mile</span></div>
+      <div class="row"><span class="t">17:30</span><span class="d">Soccer practice (Tue/Thu) or strength training (Mon/Wed/Fri)</span></div>
+      <div class="row"><span class="t">19:00</span><span class="d">Family dinner, phones in the basket</span></div>
+      <div class="row"><span class="t">19:45</span><span class="d">Walk 3: 1 mile with the kids</span></div>
+      <div class="row"><span class="t">21:30</span><span class="d">Screens off, lights out by 22:00</span></div>
+    </div>
+    </div>
+
+    <div class="block" id="nutrition-part">
+      <h3 class="pane-title">Nutrition</h3>
+      <p class="sub">No breakfast. A 16-hour fast, an 8-hour eating window, whole foods and no alcohol.</p>
 
     <div class="card window">
       <h3>My daily window</h3>
@@ -431,12 +449,13 @@ footer .wrap { padding-block: 24px; display: grid; gap: 6px; font-size: 0.85rem;
       <div class="card"><span class="label">Carbs and fats</span><p>Quinoa, brown rice, oats, whole-grain wraps, olive oil, almonds, walnuts, chia seeds, natural peanut butter</p></div>
     </div>
     <p class="note">Fasting isn't right for everyone, including people who are pregnant, on blood-sugar medication, or with a history of disordered eating. Talk to your doctor first.</p>
+    </div>
 
     <div class="stories" data-page="nutrition">
       <div class="stories-head">
         <span class="label">Community stories</span>
-        <h3>How has eating clean changed things for you?</h3>
-        <p class="sub">Share what you eat, what changed, or what helped you stick with it.</p>
+        <h3>How do you fit healthy eating and movement into your day?</h3>
+        <p class="sub">Share your routine, what you eat, or what finally helped you stick with it.</p>
       </div>
       <div class="story-list" data-list><p class="muted">Loading stories…</p></div>
       <form class="card form story-form" novalidate>
@@ -464,124 +483,7 @@ footer .wrap { padding-block: 24px; display: grid; gap: 6px; font-size: 0.85rem;
     </div>
   </section>
 
-  <!-- MY DAY -->
-  <section class="page" id="day" role="tabpanel" hidden>
-    <div class="page-head"><h2>My Day</h2><p class="sub">Five miles split into three walks, fitted around duty, practice and family.</p></div>
-    <div class="list">
-      <div class="row"><span class="t">5:00</span><span class="d">Wake up, water, 5 minutes of mobility</span></div>
-      <div class="row"><span class="t">5:15</span><span class="d">Walk 1: 3 miles, fasted<small>Quiet time to think or pray</small></span></div>
-      <div class="row"><span class="t">6:30</span><span class="d">Group PT / Personal PT</span></div>
-      <div class="row"><span class="t">9:00</span><span class="d">Duty day<small>Hardest work first</small></span></div>
-      <div class="row"><span class="t">12:00</span><span class="d">First meal, then Walk 2: 1 mile</span></div>
-      <div class="row"><span class="t">17:30</span><span class="d">Soccer practice (Tue/Thu) or strength training (Mon/Wed/Fri)</span></div>
-      <div class="row"><span class="t">19:00</span><span class="d">Family dinner, phones in the basket</span></div>
-      <div class="row"><span class="t">19:45</span><span class="d">Walk 3: 1 mile with the kids</span></div>
-      <div class="row"><span class="t">21:30</span><span class="d">Screens off, lights out by 22:00</span></div>
-    </div>
 
-    <div class="stories" data-page="day">
-      <div class="stories-head">
-        <span class="label">Community stories</span>
-        <h3>How do you fit movement into your day?</h3>
-        <p class="sub">Share your routine, your walks, or what finally worked.</p>
-      </div>
-      <div class="story-list" data-list><p class="muted">Loading stories…</p></div>
-      <form class="card form story-form" novalidate>
-        <h4>Share your story</h4>
-        <p class="cm-as" data-as hidden></p>
-        <div class="story-fields" data-guest>
-          <div class="field">
-            <label for="st-day-name">Name</label>
-            <input id="st-day-name" name="name" type="text" maxlength="60" autocomplete="name" placeholder="First name is fine">
-          </div>
-          <div class="field">
-            <label for="st-day-email">Email <span class="opt">(never shown)</span></label>
-            <input id="st-day-email" name="email" type="email" maxlength="200" autocomplete="email" placeholder="you@example.com">
-          </div>
-        </div>
-        <div class="field">
-          <label for="st-day-story">Your story</label>
-          <textarea id="st-day-story" name="story" rows="4" maxlength="2000" placeholder="Tell us what happened"></textarea>
-        </div>
-        <div class="hp" aria-hidden="true"><label for="st-day-website">Website</label><input id="st-day-website" name="website" type="text" tabindex="-1" autocomplete="off"></div>
-        <button class="btn primary" type="submit">Share story</button>
-        <p class="form-status" data-status role="status" aria-live="polite"></p>
-        <p class="muted small">Your story appears right away with your name. Your email stays private. Please keep medical details to yourself.</p>
-      </form>
-    </div>
-  </section>
-
-  <!-- BURNERS -->
-  <section class="page" id="burners" role="tabpanel" hidden>
-    <div class="page-head"><h2>The Four Burners</h2><p class="sub">The old theory says turn one off to succeed. I say turn the flame down, never off, and check every burner each Sunday.</p></div>
-    <div class="grid">
-      <div class="card burner"><h3>Family</h3><p>One undistracted meal a day. A walk with the kids every evening. Date night every other week.</p><span class="min">Minimum: one real meal together</span></div>
-      <div class="card burner"><h3>Friends</h3><p>Sunday walk-and-talk with friends. One call a week to an old battle buddy.</p><span class="min">Minimum: one real conversation a week</span></div>
-      <div class="card burner"><h3>Health</h3><p>5 miles a day, strength training 3 times a week, time-restricted eating, 7+ hours of sleep.</p><span class="min">Minimum: 3 miles on the worst day</span></div>
-      <div class="card burner"><h3>Work</h3><p>Lead well, do the hard work early, coach the team, leave work at work.</p><span class="min">Minimum: protect focus, end on time</span></div>
-    </div>
-    <div class="card">
-      <h3>The Sunday Burner Check</h3>
-      <ol style="margin:0;padding-left:1.2em;display:grid;gap:6px">
-        <li>Rate each burner from 1 to 5.</li>
-        <li>Pick the lowest one.</li>
-        <li>Choose one small action for it this week.</li>
-        <li>Stack burners when you can: a walk with your kid is Family and Health at once.</li>
-      </ol>
-    </div>
-
-    <div class="section-title"><h3>Where the Four Burners comes from</h3></div>
-    <div class="two">
-      <div class="card">
-        <span class="label">The original</span>
-        <h3>A story told on an Australian road trip</h3>
-        <p>The idea was popularized by writer David Sedaris in his 2009 <em>New Yorker</em> essay "Laugh, Kookaburra." On a road trip through Australia, a friend who had retired after a successful career described life as a stove with four burners: family, friends, health and work.</p>
-        <p>The lesson was blunt. To be successful, you have to turn one burner off. To be very successful, you have to turn off two.</p>
-      </div>
-      <div class="card">
-        <span class="label">How it's grown</span>
-        <h3>From "turn one off" to "seasons"</h3>
-        <p>James Clear, author of <em>Atomic Habits</em>, helped spread the theory and suggested ways to live with it: hand off or automate what you can, set clear limits on your ambition, and turn burners up or down through different seasons of life.</p>
-        <p>Greg McKeown's book <em>Essentialism</em> makes a related case. Trade-offs are unavoidable, so choose them on purpose and focus your energy on what matters most.</p>
-      </div>
-    </div>
-    <div class="card burner">
-      <span class="label">My take</span>
-      <h3>Turn it down. Never turn it off.</h3>
-      <p>I agree that you can't run all four burners on high at once. But I've seen what happens when one goes out completely. When I let my health go cold for years, it nearly took the other three with it. So I keep every burner lit, give each one a minimum flame I never go below, and turn them up or down as the season demands. That's the whole idea behind Keep All Four Lit.</p>
-    </div>
-
-    <div class="stories" data-page="burners">
-      <div class="stories-head">
-        <span class="label">Community stories</span>
-        <h3>How do you keep your burners lit?</h3>
-        <p class="sub">Share how you balance family, friends, health and work.</p>
-      </div>
-      <div class="story-list" data-list><p class="muted">Loading stories…</p></div>
-      <form class="card form story-form" novalidate>
-        <h4>Share your story</h4>
-        <p class="cm-as" data-as hidden></p>
-        <div class="story-fields" data-guest>
-          <div class="field">
-            <label for="st-burners-name">Name</label>
-            <input id="st-burners-name" name="name" type="text" maxlength="60" autocomplete="name" placeholder="First name is fine">
-          </div>
-          <div class="field">
-            <label for="st-burners-email">Email <span class="opt">(never shown)</span></label>
-            <input id="st-burners-email" name="email" type="email" maxlength="200" autocomplete="email" placeholder="you@example.com">
-          </div>
-        </div>
-        <div class="field">
-          <label for="st-burners-story">Your story</label>
-          <textarea id="st-burners-story" name="story" rows="4" maxlength="2000" placeholder="Tell us what happened"></textarea>
-        </div>
-        <div class="hp" aria-hidden="true"><label for="st-burners-website">Website</label><input id="st-burners-website" name="website" type="text" tabindex="-1" autocomplete="off"></div>
-        <button class="btn primary" type="submit">Share story</button>
-        <p class="form-status" data-status role="status" aria-live="polite"></p>
-        <p class="muted small">Your story appears right away with your name. Your email stays private. Please keep medical details to yourself.</p>
-      </form>
-    </div>
-  </section>
 
   <!-- SCIENCE -->
   <section class="page" id="science" role="tabpanel" hidden>
@@ -809,7 +711,7 @@ footer .wrap { padding-block: 24px; display: grid; gap: 6px; font-size: 0.85rem;
     </div>
   </section>
 
-  <!-- ABOUT -->
+  <!-- ABOUT & FOUR BURNERS -->
   <section class="page" id="about" role="tabpanel" hidden>
     <div class="page-head"><span class="label">About me</span><h2>Hi, I'm Coach E.</h2></div>
     <div class="prose">
@@ -820,6 +722,79 @@ footer .wrap { padding-block: 24px; display: grid; gap: 6px; font-size: 0.85rem;
       <p>Today, I'm in the best shape of my life. I coach youth soccer and raise three kids with my wife. And I share what works so you can do it too.</p>
       <p class="signoff">Let's get to work.<br><span>— Coach E</span></p>
     </div>
+
+    <div class="block" id="burners-part">
+      <h3 class="pane-title">The Four Burners</h3>
+      <p class="sub">The old theory says turn one off to succeed. I say turn the flame down, never off, and check every burner each Sunday.</p>
+    <div class="grid">
+      <div class="card burner"><h3>Family</h3><p>One undistracted meal a day. A walk with the kids every evening. Date night every other week.</p><span class="min">Minimum: one real meal together</span></div>
+      <div class="card burner"><h3>Friends</h3><p>Sunday walk-and-talk with friends. One call a week to an old battle buddy.</p><span class="min">Minimum: one real conversation a week</span></div>
+      <div class="card burner"><h3>Health</h3><p>5 miles a day, strength training 3 times a week, time-restricted eating, 7+ hours of sleep.</p><span class="min">Minimum: 3 miles on the worst day</span></div>
+      <div class="card burner"><h3>Work</h3><p>Lead well, do the hard work early, coach the team, leave work at work.</p><span class="min">Minimum: protect focus, end on time</span></div>
+    </div>
+    <div class="card">
+      <h3>The Sunday Burner Check</h3>
+      <ol style="margin:0;padding-left:1.2em;display:grid;gap:6px">
+        <li>Rate each burner from 1 to 5.</li>
+        <li>Pick the lowest one.</li>
+        <li>Choose one small action for it this week.</li>
+        <li>Stack burners when you can: a walk with your kid is Family and Health at once.</li>
+      </ol>
+    </div>
+
+    <div class="section-title"><h3>Where the Four Burners comes from</h3></div>
+    <div class="two">
+      <div class="card">
+        <span class="label">The original</span>
+        <h3>A story told on an Australian road trip</h3>
+        <p>The idea was popularized by writer David Sedaris in his 2009 <em>New Yorker</em> essay "Laugh, Kookaburra." On a road trip through Australia, a friend who had retired after a successful career described life as a stove with four burners: family, friends, health and work.</p>
+        <p>The lesson was blunt. To be successful, you have to turn one burner off. To be very successful, you have to turn off two.</p>
+      </div>
+      <div class="card">
+        <span class="label">How it's grown</span>
+        <h3>From "turn one off" to "seasons"</h3>
+        <p>James Clear, author of <em>Atomic Habits</em>, helped spread the theory and suggested ways to live with it: hand off or automate what you can, set clear limits on your ambition, and turn burners up or down through different seasons of life.</p>
+        <p>Greg McKeown's book <em>Essentialism</em> makes a related case. Trade-offs are unavoidable, so choose them on purpose and focus your energy on what matters most.</p>
+      </div>
+    </div>
+    <div class="card burner">
+      <span class="label">My take</span>
+      <h3>Turn it down. Never turn it off.</h3>
+      <p>I agree that you can't run all four burners on high at once. But I've seen what happens when one goes out completely. When I let my health go cold for years, it nearly took the other three with it. So I keep every burner lit, give each one a minimum flame I never go below, and turn them up or down as the season demands. That's the whole idea behind Keep All Four Lit.</p>
+    </div>
+    </div>
+
+    <div class="stories" data-page="burners">
+      <div class="stories-head">
+        <span class="label">Community stories</span>
+        <h3>How do you keep your burners lit?</h3>
+        <p class="sub">Share how you balance family, friends, health and work.</p>
+      </div>
+      <div class="story-list" data-list><p class="muted">Loading stories…</p></div>
+      <form class="card form story-form" novalidate>
+        <h4>Share your story</h4>
+        <p class="cm-as" data-as hidden></p>
+        <div class="story-fields" data-guest>
+          <div class="field">
+            <label for="st-burners-name">Name</label>
+            <input id="st-burners-name" name="name" type="text" maxlength="60" autocomplete="name" placeholder="First name is fine">
+          </div>
+          <div class="field">
+            <label for="st-burners-email">Email <span class="opt">(never shown)</span></label>
+            <input id="st-burners-email" name="email" type="email" maxlength="200" autocomplete="email" placeholder="you@example.com">
+          </div>
+        </div>
+        <div class="field">
+          <label for="st-burners-story">Your story</label>
+          <textarea id="st-burners-story" name="story" rows="4" maxlength="2000" placeholder="Tell us what happened"></textarea>
+        </div>
+        <div class="hp" aria-hidden="true"><label for="st-burners-website">Website</label><input id="st-burners-website" name="website" type="text" tabindex="-1" autocomplete="off"></div>
+        <button class="btn primary" type="submit">Share story</button>
+        <p class="form-status" data-status role="status" aria-live="polite"></p>
+        <p class="muted small">Your story appears right away with your name. Your email stays private. Please keep medical details to yourself.</p>
+      </form>
+    </div>
+
     <div class="card coffee" data-coffee hidden>
       <h3>Support the work</h3>
       <p>If something here helped you, you can buy me a coffee. It keeps the free posts coming.</p>
@@ -1037,7 +1012,10 @@ document.getElementById("close").addEventListener("click", () => dlg.close());
 dlg.addEventListener("click", e => { if (e.target === dlg) dlg.close(); });
 
 const tabs = document.querySelectorAll(".tabs .tab");
+const ALIASES = { day: ["nutrition", "day-part"], burners: ["about", "burners-part"] };
 function show(id) {
+  let jump = null;
+  if (ALIASES[id]) { jump = ALIASES[id][1]; id = ALIASES[id][0]; }
   if (!document.getElementById(id)) id = "home";
   document.querySelectorAll(".page").forEach(s => s.hidden = s.id !== id);
   tabs.forEach(t => t.setAttribute("aria-selected", t.dataset.tab === id));
@@ -1045,6 +1023,7 @@ function show(id) {
   if (cur) { const strip = cur.parentElement; strip.scrollTo({ left: Math.max(0, cur.offsetLeft - (strip.clientWidth - cur.offsetWidth) / 2), behavior: "smooth" }); }
   try { history.replaceState(null, "", "#" + id); } catch (e) {}
   window.scrollTo({ top: 0 });
+  if (jump) { const el = document.getElementById(jump), bar = document.querySelector(".topbar"); if (el) window.scrollTo({ top: el.getBoundingClientRect().top + window.scrollY - bar.offsetHeight - 12 }); }
 }
 tabs.forEach(t => t.addEventListener("click", () => show(t.dataset.tab)));
 document.querySelectorAll("[data-go]").forEach(b => b.addEventListener("click", () => show(b.dataset.go)));
