@@ -143,6 +143,17 @@ dialog::backdrop { background: rgba(10,15,12,.45); backdrop-filter: blur(3px); }
 .action { background: var(--accent-soft); border-radius: 14px; padding: 14px 16px; font-weight: 700; }
 .close { justify-self: end; border: 1px solid var(--line); background: var(--surface); width: 36px; height: 36px; border-radius: 50%; cursor: pointer; font-size: 1.1rem; line-height: 1; }
 
+/* Science: fasting stages and food cards */
+.stages { display: grid; gap: 12px; grid-template-columns: repeat(auto-fit, minmax(min(100%, 210px), 1fr)); }
+.stage { background: var(--card); border: 1px solid var(--line); border-radius: var(--r); padding: 16px 18px; display: grid; gap: 6px; align-content: start; position: relative; overflow: hidden; }
+.stage::before { content: ""; position: absolute; inset: 0 0 auto 0; height: 4px; background: var(--accent); }
+.stage:nth-child(1)::before { opacity: .35; } .stage:nth-child(2)::before { opacity: .55; } .stage:nth-child(3)::before { opacity: .8; }
+.stage .hrs { font-size: 0.78rem; font-weight: 800; color: var(--accent); font-variant-numeric: tabular-nums; letter-spacing: 0.04em; }
+.stage h4 { font-size: 1.05rem; font-weight: 700; }
+.stage p { color: var(--muted); font-size: 0.93rem; }
+.card.spike { border-top: 4px solid var(--flame); }
+.card.steady { border-top: 4px solid var(--accent); }
+
 /* Contact form */
 .form { gap: 16px; }
 .field { display: grid; gap: 6px; }
@@ -349,10 +360,62 @@ footer .wrap { padding-block: 24px; display: grid; gap: 6px; font-size: 0.85rem;
   <!-- SCIENCE -->
   <section class="page" id="science" role="tabpanel" hidden>
     <div class="page-head"><h2>The Science</h2><p class="sub">Every habit I teach is backed by research. Here's what it says, without the hype.</p></div>
+
+    <div class="section-title"><h3>Fasting, simply explained</h3></div>
+    <p class="sub">Fasting just means going a set time without food. People do it for health, discipline or faith. Here are three common kinds.</p>
+    <div class="grid">
+      <div class="card">
+        <span class="label">Intermittent fasting</span>
+        <h3>Eat in a window</h3>
+        <p>You cycle between eating and not eating. Popular versions are 16:8 (eat within 8 hours), 5:2 (two low-calorie days a week) and alternate-day fasting.</p>
+        <p>Studies show it can help with weight and blood sugar, mostly because a shorter window makes it easier to eat less. It works about as well as plain calorie cutting, so pick whichever you can stick with.</p>
+        <span class="cite">de Cabo &amp; Mattson, NEJM, 2019 · Liu et al., NEJM, 2022</span>
+      </div>
+      <div class="card">
+        <span class="label">Ramadan fasting</span>
+        <h3>Dawn to sunset, for a month</h3>
+        <p>During Ramadan, Muslims fast from dawn to sunset for about 30 days, with no food or water, as an act of faith. Meals are eaten before dawn (suhoor) and after sunset (iftar).</p>
+        <p>Research shows modest weight loss during the month that often returns afterward. The big health tip: drink plenty of water and eat slow-digesting food at suhoor to get through the day.</p>
+        <span class="cite">Fernando et al., Nutrients, 2019</span>
+      </div>
+      <div class="card">
+        <span class="label">36-hour fasting</span>
+        <h3>A full day and a half</h3>
+        <p>You stop eating after dinner and don't eat again until breakfast two days later, drinking only water, black coffee or plain tea.</p>
+        <p>By this point your body has used most of its stored sugar and runs mainly on fat. It's an advanced step: keep up salt and fluids, break it gently, and talk to your doctor first.</p>
+        <span class="cite">Cahill, Annual Review of Nutrition, 2006</span>
+      </div>
+    </div>
+
+    <div class="section-title"><h3>What happens after you eat</h3></div>
+    <p class="sub">Food is broken down into fuel. Here's the simple version of what your body does, hour by hour, from your last bite.</p>
+    <div class="stages">
+      <div class="stage"><span class="hrs">0–4 hrs</span><h4>Digesting</h4><p>Carbs become glucose (sugar), protein becomes amino acids, fat becomes fatty acids. Blood sugar rises, and insulin moves that sugar into your cells.</p></div>
+      <div class="stage"><span class="hrs">4–12 hrs</span><h4>Using stored sugar</h4><p>Insulin falls. Your liver releases glycogen, its stored sugar, to keep your energy steady.</p></div>
+      <div class="stage"><span class="hrs">12–24 hrs</span><h4>Switching to fat</h4><p>Glycogen runs low, so your body burns more fat. The liver starts turning fat into ketones, a backup fuel.</p></div>
+      <div class="stage"><span class="hrs">24–36+ hrs</span><h4>Running on fat</h4><p>Ketones climb and become a main fuel, including for your brain. This is the deep end of fasting.</p></div>
+    </div>
+    <p class="note">Times are rough guides. They shift with what you ate, how active you are and your body.</p>
+
+    <div class="section-title"><h3>What to eat first, especially in the morning</h3></div>
+    <p class="sub">Whether it's breakfast or the meal that breaks your fast, what you eat first sets up the rest of your day.</p>
+    <div class="two">
+      <div class="card spike">
+        <span class="label">Spike and crash</span>
+        <h3>Sugary or refined carbs</h3>
+        <p>Pastries, sugary cereal, juice, white bread. They turn into sugar fast, blood sugar shoots up, insulin floods in, then you crash and feel hungry and tired again within a couple of hours.</p>
+      </div>
+      <div class="card steady">
+        <span class="label">Steady energy</span>
+        <h3>Protein, fiber and healthy fats</h3>
+        <p>Eggs, Greek yogurt, oats, berries, nuts, avocado. They digest slowly, so blood sugar rises gently and you stay full and focused for hours.</p>
+      </div>
+    </div>
+
+    <div class="section-title"><h3>The research behind my habits</h3></div>
     <div class="grid">
       <div class="card"><span class="label">Steps</span><h3>More steps, longer life</h3><p>Risk of early death drops as daily steps rise, leveling off around 8,000–10,000.</p><span class="cite">Paluch et al., Lancet Public Health, 2022</span></div>
       <div class="card"><span class="label">After meals</span><h3>Walk after you eat</h3><p>Short walks after meals lower blood-sugar spikes.</p><span class="cite">Buffey et al., Sports Medicine, 2022</span></div>
-      <div class="card"><span class="label">Fasting</span><h3>16/8 works by making less easier</h3><p>Time-restricted eating gives similar weight loss to cutting calories. It helps because a shorter window makes it easier to eat less.</p><span class="cite">Liu et al., NEJM, 2022</span></div>
       <div class="card"><span class="label">Strength</span><h3>Muscle is medicine</h3><p>Strength training keeps muscle as you age and lowers mortality.</p><span class="cite">Momma et al., Br J Sports Med, 2022</span></div>
       <div class="card"><span class="label">Protein</span><h3>About 1.6 g per kg</h3><p>That much daily protein supports muscle built through training.</p><span class="cite">Morton et al., Br J Sports Med, 2018</span></div>
       <div class="card"><span class="label">Sleep</span><h3>7 hours minimum</h3><p>Adults need at least 7 hours of sleep a night.</p><span class="cite">AASM and SRS consensus, 2015</span></div>
