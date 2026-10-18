@@ -16,6 +16,7 @@
   --card: #ffffff;
   --fg: #1c211e;
   --muted: #6a716c;
+  --text2: #3a413d;
   --line: #e4e8e3;
   --accent: #17785a;
   --accent-soft: #e4f2ec;
@@ -27,18 +28,18 @@
 }
 @media (prefers-color-scheme: dark) {
   :root:not([data-theme="light"]) {
-    --bg: #111513; --surface: #181d1a; --card: #1c221f; --fg: #edf1ee; --muted: #9ba49e; --line: #2a322e;
+    --bg: #111513; --surface: #181d1a; --card: #1c221f; --fg: #edf1ee; --muted: #9ba49e; --text2: #c7cfca; --line: #2a322e;
     --accent: #4cc493; --accent-soft: #1b3229; --flame: #f2894c; --flame-soft: #3a2519;
     --shadow: 0 1px 2px rgba(0,0,0,.4), 0 6px 20px rgba(0,0,0,.35); color-scheme: dark;
   }
 }
 :root[data-theme="dark"] {
-  --bg: #111513; --surface: #181d1a; --card: #1c221f; --fg: #edf1ee; --muted: #9ba49e; --line: #2a322e;
+  --bg: #111513; --surface: #181d1a; --card: #1c221f; --fg: #edf1ee; --muted: #9ba49e; --text2: #c7cfca; --line: #2a322e;
   --accent: #4cc493; --accent-soft: #1b3229; --flame: #f2894c; --flame-soft: #3a2519;
   --shadow: 0 1px 2px rgba(0,0,0,.4), 0 6px 20px rgba(0,0,0,.35); color-scheme: dark;
 }
 * { box-sizing: border-box; }
-body { background: var(--bg); color: var(--fg); font-family: var(--font); font-size: 16px; line-height: 1.6; -webkit-font-smoothing: antialiased; }
+body { background: var(--bg); color: var(--fg); font-family: var(--font); font-size: 17px; line-height: 1.7; -webkit-font-smoothing: antialiased; }
 body::before { content: ""; position: fixed; inset: 0 0 auto; height: env(safe-area-inset-top, 0px); z-index: 30; background: var(--bg); }
 .wrap { max-width: 1040px; margin: 0 auto; padding-left: max(16px, env(safe-area-inset-left, 0px)); padding-right: max(16px, env(safe-area-inset-right, 0px)); }
 h1, h2, h3, h4 { margin: 0; line-height: 1.15; text-wrap: balance; letter-spacing: -0.02em; }
@@ -66,11 +67,12 @@ button { font: inherit; color: inherit; }
 .tab:hover { border-color: var(--fg); }
 .tab[aria-selected="true"] { background: var(--fg); color: var(--bg); border-color: var(--fg); }
 
-main { padding-block: 28px 48px; }
-.page { display: grid; gap: 28px; }
-.page-head { display: grid; gap: 6px; }
+main { padding-block: 32px 64px; }
+.page { display: grid; gap: 40px; }
+.block { display: grid; gap: 16px; }
+.page-head { display: grid; gap: 10px; }
 .page-head h2 { font-size: clamp(1.8rem, 4.5vw, 2.4rem); font-weight: 800; }
-.sub { color: var(--muted); font-size: 1.05rem; max-width: 40em; }
+.sub { color: var(--text2); font-size: 1.08rem; max-width: 36em; }
 .label { font-size: 0.78rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.08em; color: var(--accent); }
 
 /* Hero */
@@ -86,12 +88,12 @@ main { padding-block: 28px 48px; }
 .btn.ghost { background: var(--card); color: var(--fg); border: 1px solid var(--line); }
 
 /* Cards */
-.grid { display: grid; gap: 16px; grid-template-columns: repeat(auto-fill, minmax(min(100%, 280px), 1fr)); }
-.card { background: var(--card); border: 1px solid var(--line); border-radius: var(--r); padding: 20px; display: grid; gap: 8px; align-content: start; min-width: 0; }
+.grid { display: grid; gap: 18px; grid-template-columns: repeat(auto-fill, minmax(min(100%, 280px), 1fr)); }
+.card { background: var(--card); border: 1px solid var(--line); border-radius: var(--r); padding: 24px; display: grid; gap: 10px; align-content: start; min-width: 0; }
 .card.click { cursor: pointer; text-align: left; transition: transform .15s, box-shadow .15s; }
 .card.click:hover { transform: translateY(-2px); box-shadow: var(--shadow); }
-.card h3 { font-size: 1.12rem; font-weight: 700; }
-.card p { color: var(--muted); font-size: 0.95rem; }
+.card h3 { font-size: 1.18rem; font-weight: 700; }
+.card p { color: var(--text2); font-size: 1rem; }
 .go { font-weight: 700; font-size: 0.88rem; color: var(--accent); }
 .section-title { display: flex; justify-content: space-between; align-items: baseline; gap: 12px; }
 .section-title h3 { font-size: 1.35rem; font-weight: 800; }
@@ -125,14 +127,14 @@ main { padding-block: 28px 48px; }
 .row:last-child { border-bottom: 0; }
 .row .t { font-weight: 700; font-variant-numeric: tabular-nums; }
 .row .d { min-width: 0; }
-.row .d small { display: block; color: var(--muted); font-size: 0.86rem; }
+.row .d small { display: block; color: var(--muted); font-size: 0.88rem; }
 .ticklist { list-style: none; margin: 0; padding: 0; display: grid; gap: 10px; }
 .ticklist li { display: grid; grid-template-columns: 22px 1fr; gap: 10px; align-items: start; }
 .ticklist svg { width: 22px; height: 22px; color: var(--accent); margin-top: 1px; }
 .two { display: grid; gap: 16px; grid-template-columns: repeat(auto-fit, minmax(min(100%, 320px), 1fr)); }
 .cite { color: var(--muted); font-size: 0.82rem; font-style: italic; }
-.note { background: var(--surface); border-radius: 14px; padding: 14px 16px; font-size: 0.92rem; color: var(--muted); }
-.prose { display: grid; gap: 14px; max-width: 42em; font-size: 1.04rem; }
+.note { background: var(--surface); border-radius: 14px; padding: 14px 18px; font-size: 0.95rem; color: var(--text2); }
+.prose { display: grid; gap: 18px; max-width: 38em; font-size: 1.08rem; line-height: 1.75; }
 
 /* Reader sheet */
 dialog { border: 0; padding: 0; border-radius: 24px; width: min(640px, calc(100% - 32px)); max-height: 86vh; background: var(--card); color: var(--fg); box-shadow: 0 20px 60px rgba(0,0,0,.3); }
@@ -143,6 +145,13 @@ dialog::backdrop { background: rgba(10,15,12,.45); backdrop-filter: blur(3px); }
 .action { background: var(--accent-soft); border-radius: 14px; padding: 14px 16px; font-weight: 700; }
 .close { justify-self: end; border: 1px solid var(--line); background: var(--surface); width: 36px; height: 36px; border-radius: 50%; cursor: pointer; font-size: 1.1rem; line-height: 1; }
 
+/* Segmented sub-tabs (Science) */
+.segmented { display: flex; gap: 4px; padding: 4px; background: var(--surface); border-radius: 14px; overflow-x: auto; scrollbar-width: none; justify-self: start; max-width: 100%; }
+.segmented::-webkit-scrollbar { display: none; }
+.segmented button { border: 0; background: transparent; padding: 9px 16px; border-radius: 10px; font-weight: 600; font-size: 0.95rem; color: var(--muted); cursor: pointer; white-space: nowrap; }
+.pane-title { font-size: 1.45rem; font-weight: 800; }
+.segmented button[aria-selected="true"] { background: var(--card); color: var(--fg); box-shadow: 0 1px 3px rgba(0,0,0,.12); }
+
 /* Science: fasting stages and food cards */
 .stages { display: grid; gap: 12px; grid-template-columns: repeat(auto-fit, minmax(min(100%, 210px), 1fr)); }
 .stage { background: var(--card); border: 1px solid var(--line); border-radius: var(--r); padding: 16px 18px; display: grid; gap: 6px; align-content: start; position: relative; overflow: hidden; }
@@ -150,7 +159,7 @@ dialog::backdrop { background: rgba(10,15,12,.45); backdrop-filter: blur(3px); }
 .stage:nth-child(1)::before { opacity: .35; } .stage:nth-child(2)::before { opacity: .55; } .stage:nth-child(3)::before { opacity: .8; }
 .stage .hrs { font-size: 0.78rem; font-weight: 800; color: var(--accent); font-variant-numeric: tabular-nums; letter-spacing: 0.04em; }
 .stage h4 { font-size: 1.05rem; font-weight: 700; }
-.stage p { color: var(--muted); font-size: 0.93rem; }
+.stage p { color: var(--text2); font-size: 0.97rem; }
 .card.spike { border-top: 4px solid var(--flame); }
 .card.steady { border-top: 4px solid var(--accent); }
 
@@ -360,8 +369,15 @@ footer .wrap { padding-block: 24px; display: grid; gap: 6px; font-size: 0.85rem;
   <!-- SCIENCE -->
   <section class="page" id="science" role="tabpanel" hidden>
     <div class="page-head"><h2>The Science</h2><p class="sub">Every habit I teach is backed by research. Here's what it says, without the hype.</p></div>
+    <div class="segmented" role="tablist" aria-label="Science topics">
+      <button type="button" role="tab" data-sub="fasting" aria-selected="true">Fasting</button>
+      <button type="button" role="tab" data-sub="digest" aria-selected="false">After you eat</button>
+      <button type="button" role="tab" data-sub="first" aria-selected="false">First meal</button>
+      <button type="button" role="tab" data-sub="research" aria-selected="false">Research</button>
+    </div>
 
-    <div class="section-title"><h3>Fasting, simply explained</h3></div>
+    <div class="block" data-pane="fasting">
+      <h3 class="pane-title">Fasting, simply explained</h3>
     <p class="sub">Fasting just means going a set time without food. People do it for health, discipline or faith. Here are three common kinds.</p>
     <div class="grid">
       <div class="card">
@@ -386,8 +402,10 @@ footer .wrap { padding-block: 24px; display: grid; gap: 6px; font-size: 0.85rem;
         <span class="cite">Cahill, Annual Review of Nutrition, 2006</span>
       </div>
     </div>
+    </div>
 
-    <div class="section-title"><h3>What happens after you eat</h3></div>
+    <div class="block" data-pane="digest" hidden>
+      <h3 class="pane-title">What happens after you eat</h3>
     <p class="sub">Food is broken down into fuel. Here's the simple version of what your body does, hour by hour, from your last bite.</p>
     <div class="stages">
       <div class="stage"><span class="hrs">0–4 hrs</span><h4>Digesting</h4><p>Carbs become glucose (sugar), protein becomes amino acids, fat becomes fatty acids. Blood sugar rises, and insulin moves that sugar into your cells.</p></div>
@@ -396,8 +414,10 @@ footer .wrap { padding-block: 24px; display: grid; gap: 6px; font-size: 0.85rem;
       <div class="stage"><span class="hrs">24–36+ hrs</span><h4>Running on fat</h4><p>Ketones climb and become a main fuel, including for your brain. This is the deep end of fasting.</p></div>
     </div>
     <p class="note">Times are rough guides. They shift with what you ate, how active you are and your body.</p>
+    </div>
 
-    <div class="section-title"><h3>What to eat first, especially in the morning</h3></div>
+    <div class="block" data-pane="first" hidden>
+      <h3 class="pane-title">What to eat first, especially in the morning</h3>
     <p class="sub">Whether it's breakfast or the meal that breaks your fast, what you eat first sets up the rest of your day.</p>
     <div class="two">
       <div class="card spike">
@@ -411,8 +431,10 @@ footer .wrap { padding-block: 24px; display: grid; gap: 6px; font-size: 0.85rem;
         <p>Eggs, Greek yogurt, oats, berries, nuts, avocado. They digest slowly, so blood sugar rises gently and you stay full and focused for hours.</p>
       </div>
     </div>
+    </div>
 
-    <div class="section-title"><h3>The research behind my habits</h3></div>
+    <div class="block" data-pane="research" hidden>
+      <h3 class="pane-title">The research behind my habits</h3>
     <div class="grid">
       <div class="card"><span class="label">Steps</span><h3>More steps, longer life</h3><p>Risk of early death drops as daily steps rise, leveling off around 8,000–10,000.</p><span class="cite">Paluch et al., Lancet Public Health, 2022</span></div>
       <div class="card"><span class="label">After meals</span><h3>Walk after you eat</h3><p>Short walks after meals lower blood-sugar spikes.</p><span class="cite">Buffey et al., Sports Medicine, 2022</span></div>
@@ -421,6 +443,7 @@ footer .wrap { padding-block: 24px; display: grid; gap: 6px; font-size: 0.85rem;
       <div class="card"><span class="label">Sleep</span><h3>7 hours minimum</h3><p>Adults need at least 7 hours of sleep a night.</p><span class="cite">AASM and SRS consensus, 2015</span></div>
       <div class="card"><span class="label">Whole foods</span><h3>Processed food makes you eat more</h3><p>People on ultra-processed diets ate about 500 more calories a day.</p><span class="cite">Hall et al., Cell Metabolism, 2019</span></div>
       <div class="card"><span class="label">Friendship</span><h3>Friends add years</h3><p>Strong social ties are linked to a longer life.</p><span class="cite">Holt-Lunstad et al., PLOS Medicine, 2010</span></div>
+    </div>
     </div>
   </section>
 
@@ -834,6 +857,16 @@ joinForm.addEventListener("submit", async (e) => {
   }
 });
 renderMember();
+
+// Science sub-tabs
+document.querySelectorAll(".segmented [data-sub]").forEach(b => b.addEventListener("click", () => {
+  const key = b.dataset.sub;
+  document.querySelectorAll(".segmented [data-sub]").forEach(x => x.setAttribute("aria-selected", x === b));
+  document.querySelectorAll("[data-pane]").forEach(p => p.hidden = p.dataset.pane !== key);
+}));
+
+// Follow links that change the #section (back/forward, shared links)
+window.addEventListener("hashchange", () => show((location.hash || "#home").slice(1)));
 
 // Buy me a coffee
 if (COFFEE_URL) {
