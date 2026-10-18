@@ -63,6 +63,7 @@ button { font: inherit; color: inherit; }
 .brand-text { display: grid; line-height: 1.15; }
 .brand-text { gap: 2px; }
 .brand-text strong { font-weight: 800; font-size: clamp(1.35rem, 5.2vw, 2.24rem); letter-spacing: -0.02em; color: var(--accent); line-height: 1.05; -webkit-text-stroke: 0.9px currentColor; paint-order: stroke fill; }
+.brand-text strong .w { color: var(--fg); text-decoration: underline; text-decoration-color: var(--accent); text-decoration-thickness: 0.12em; text-underline-offset: 0.14em; text-decoration-skip-ink: none; }
 .brand-text small { font-size: 0.85rem; font-weight: 700; color: var(--fg); letter-spacing: 0.02em; }
 .logo { display: inline-flex; gap: 3px; align-items: flex-end; padding: 7px 8px; border-radius: 10px; background: var(--flame-soft); }
 .logo i { width: 6px; height: 13px; border-radius: 50% 50% 45% 45% / 65% 65% 35% 35%; background: var(--flame); }
@@ -293,7 +294,7 @@ footer .wrap { padding-block: 24px; display: grid; gap: 6px; font-size: 0.85rem;
 <header class="topbar">
   <div class="wrap">
     <div class="bar">
-      <div class="brand"><span class="brand-text"><strong>Nutri Active Wellness</strong><small>Coach E</small></span></div>
+      <div class="brand"><span class="brand-text"><strong>Nutri Active <span class="w">Wellness</span></strong><small>Coach E</small></span></div>
       <div class="bar-actions">
       <a class="bmc" href="https://buymeacoffee.com/oilwell" target="_blank" rel="noopener" aria-label="Buy me a coffee (opens Buy Me a Coffee)"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 8h11v5.5A4.5 4.5 0 0 1 11.5 18h-2A4.5 4.5 0 0 1 5 13.5V8z" fill="currentColor"/><path d="M16 9.5h1.5a2.25 2.25 0 0 1 0 4.5H16" fill="none" stroke="currentColor" stroke-width="1.8"/><path d="M8 3.5c0 1 .8 1.3.8 2.3M11 3.5c0 1 .8 1.3.8 2.3" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"/><path d="M4 20h13" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg><span>Buy me a coffee</span></a>
       <button class="theme-btn" id="theme" aria-label="Switch to light mode"><span id="theme-icon" aria-hidden="true"></span><span id="theme-text">Light</span></button>
