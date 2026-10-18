@@ -244,6 +244,35 @@ dialog::backdrop { background: rgba(10,15,12,.45); backdrop-filter: blur(3px); }
 .story-form h4 { font-size: 1.1rem; font-weight: 800; }
 .story-fields { display: grid; gap: 14px; grid-template-columns: repeat(auto-fit, minmax(min(100%, 220px), 1fr)); }
 
+/* Phones */
+#dc-svg.compact, #cf-svg.compact, #ns-svg.compact { min-width: 0; }
+#dc-svg.compact text, #cf-svg.compact text, #ns-svg.compact text { font-size: 15px; }
+#cf-svg.compact .pt-label, #ns-svg.compact .name, #ns-svg.compact .val { font-size: 15px; }
+@media (max-width: 600px) {
+  body { font-size: 16px; }
+  main { padding-block: 20px 48px; }
+  .page { gap: 28px; }
+  .topbar .bar { padding-block: 10px 4px; transition: none; }
+  .topbar.scrolled .bar { display: none; }
+  .topbar.scrolled .tabs { padding-top: 10px; }
+  .tabs { -webkit-mask-image: linear-gradient(90deg, #000 85%, transparent); mask-image: linear-gradient(90deg, #000 85%, transparent); padding-right: 24px; }
+  .tab { min-height: 36px; }
+  .tab[aria-selected="true"] { font-size: 0.92rem; padding: 8px 16px; }
+  .hero { padding: 22px 18px; border-radius: 22px; }
+  .hero h1 { font-size: clamp(2rem, 9vw, 2.6rem); }
+  .cta-row .btn { flex: 1 1 auto; justify-content: center; }
+  .card { padding: 20px; }
+  .row { grid-template-columns: 72px minmax(0,1fr); padding: 12px 14px; }
+  .segmented button { padding: 8px 12px; font-size: 0.9rem; }
+  .dc-controls .btn { flex: 1 1 100%; justify-content: center; }
+  .dc-caption { min-height: 0; }
+  dialog { width: calc(100% - 20px); max-height: 92vh; border-radius: 20px; }
+  .sheet { padding: 20px 18px 24px; }
+  .sheet h2 { font-size: 1.4rem; }
+  .field input, .field select, .field textarea { font-size: 16px; }
+  .stories { padding-top: 28px; }
+}
+
 /* Contact form */
 .form { gap: 16px; }
 .field { display: grid; gap: 6px; }
@@ -1000,7 +1029,7 @@ function show(id) {
   document.querySelectorAll(".page").forEach(s => s.hidden = s.id !== id);
   tabs.forEach(t => t.setAttribute("aria-selected", t.dataset.tab === id));
   const cur = document.querySelector(`.tabs .tab[data-tab="${id}"]`);
-  if (cur) cur.scrollIntoView({ block: "nearest", inline: "nearest" });
+  if (cur) { const strip = cur.parentElement; strip.scrollTo({ left: Math.max(0, cur.offsetLeft - (strip.clientWidth - cur.offsetWidth) / 2), behavior: "smooth" }); }
   try { history.replaceState(null, "", "#" + id); } catch (e) {}
   window.scrollTo({ top: 0 });
 }
@@ -1183,7 +1212,9 @@ renderMember();
   const svg = document.getElementById("dc-svg");
   if (!svg) return;
   const NS = "http://www.w3.org/2000/svg";
-  const X0 = 46, X1 = 744, Y0 = 26, Y1 = 290;
+  const compact = window.innerWidth < 600, W = compact ? 420 : 760;
+  svg.setAttribute("viewBox", `0 0 ${W} 330`); if (compact) svg.classList.add("compact");
+  const X0 = compact ? 34 : 46, X1 = W - 16, Y0 = 26, Y1 = 290;
   const xs = h => X0 + (h / 24) * (X1 - X0);
   const ys = v => Y1 - v * (Y1 - Y0);
   const g = (t, m, w) => Math.exp(-((t - m) ** 2) / (2 * w * w));
@@ -1200,6 +1231,7 @@ renderMember();
   const wl = el("text", { class: "win-label", x: (xs(12) + xs(20)) / 2, y: Y0 + 16, "text-anchor": "middle" }); wl.textContent = "Eating window";
   // grid + hour labels
   ["12a", "3a", "6a", "9a", "12p", "3p", "6p", "9p", "12a"].forEach((lab, i) => {
+    if (compact && i % 2) return;
     const x = xs(i * 3);
     el("line", { class: "grid-line", x1: x, x2: x, y1: Y0, y2: Y1 });
     const t = el("text", { x, y: Y1 + 20, "text-anchor": "middle" }); t.textContent = lab;
@@ -1209,6 +1241,7 @@ renderMember();
   // meals
   [[12, "Meal 1"], [15.5, "Snack"], [19, "Dinner"]].forEach(([h, lab]) => {
     el("circle", { class: "meal", cx: xs(h), cy: Y1, r: 5 });
+    if (compact && lab === "Snack") return;
     const t = el("text", { x: xs(h), y: Y1 - 10, "text-anchor": "middle" }); t.textContent = lab;
   });
   // curves
@@ -1272,12 +1305,14 @@ renderMember();
   const svg = document.getElementById("cf-svg");
   if (!svg) return;
   const NS = "http://www.w3.org/2000/svg", HALF = 5, BED = 22;
-  const X0 = 50, X1 = 744, Y0 = 20, Y1 = 256, T0 = 6, T1 = 24;
+  const compact = window.innerWidth < 600, W = compact ? 420 : 760;
+  svg.setAttribute("viewBox", `0 0 ${W} 300`); if (compact) svg.classList.add("compact");
+  const X0 = compact ? 46 : 50, X1 = W - 14, Y0 = 20, Y1 = 256, T0 = 6, T1 = 24;
   const xs = h => X0 + ((h - T0) / (T1 - T0)) * (X1 - X0);
   const ys = v => Y1 - (v / 100) * (Y1 - Y0);
   const el = (tag, a) => { const e = document.createElementNS(NS, tag); for (const k in a) e.setAttribute(k, a[k]); svg.appendChild(e); return e; };
   const lab = h => (h % 12 === 0 ? 12 : h % 12) + (h < 12 || h === 24 ? "a" : "p");
-  for (let h = 6; h <= 24; h += 3) { el("line", { class: "grid-line", x1: xs(h), x2: xs(h), y1: Y0, y2: Y1 }); const t = el("text", { x: xs(h), y: Y1 + 20, "text-anchor": "middle" }); t.textContent = lab(h); }
+  for (let h = 6; h <= 24; h += (compact ? 6 : 3)) { el("line", { class: "grid-line", x1: xs(h), x2: xs(h), y1: Y0, y2: Y1 }); const t = el("text", { x: xs(h), y: Y1 + 20, "text-anchor": "middle" }); t.textContent = lab(h); }
   [0, 25, 50, 75, 100].forEach(v => { el("line", { class: "grid-line", x1: X0, x2: X1, y1: ys(v), y2: ys(v) }); const t = el("text", { x: X0 - 8, y: ys(v) + 4, "text-anchor": "end" }); t.textContent = v + "%"; });
   el("line", { class: "half", x1: X0, x2: X1, y1: ys(50), y2: ys(50) });
   const area = el("path", { class: "area" });
@@ -1295,7 +1330,9 @@ renderMember();
     line.setAttribute("d", d);
     area.setAttribute("d", d + "L" + xs(T1) + "," + ys(0) + "Z");
     const hh = start + HALF; halfPt.setAttribute("cx", xs(hh)); halfPt.setAttribute("cy", ys(50));
-    halfLab.setAttribute("x", xs(hh)); halfLab.setAttribute("y", ys(50) - 12); halfLab.textContent = "Half left at " + lab(hh).replace("a", " AM").replace("p", " PM");
+    const nearRight = xs(hh) > W - (compact ? 150 : 170);
+    halfLab.setAttribute("text-anchor", nearRight ? "end" : "middle");
+    halfLab.setAttribute("x", xs(hh) + (nearRight ? -8 : 0)); halfLab.setAttribute("y", ys(50) - 12); halfLab.textContent = "Half left at " + lab(hh).replace("a", " AM").replace("p", " PM");
     const left = 100 * Math.pow(0.5, (BED - start) / HALF);
     bedPt.setAttribute("cx", xs(BED)); bedPt.setAttribute("cy", ys(left));
     bedLab.setAttribute("x", xs(BED) - 10); bedLab.setAttribute("y", ys(left) - 10); bedLab.textContent = Math.round(left) + "%";
@@ -1315,7 +1352,9 @@ renderMember();
   if (!svg) return;
   const NS = "http://www.w3.org/2000/svg";
   const rows = [["No NSAID", 1.0, null, null], ["Celecoxib", 1.24, 0.91, 1.82], ["Ibuprofen", 1.48, 1.0, 2.26], ["Diclofenac", 1.5, 1.06, 2.04], ["Naproxen", 1.53, 1.07, 2.33]];
-  const X0 = 130, X1 = 720, V0 = 0, V1 = 2.5, top = 16, rowH = 50;
+  const compact = window.innerWidth < 600, W = compact ? 420 : 760;
+  svg.setAttribute("viewBox", `0 0 ${W} 300`); if (compact) svg.classList.add("compact");
+  const X0 = compact ? 96 : 130, X1 = W - (compact ? 48 : 40), V0 = 0, V1 = 2.5, top = 16, rowH = 50;
   const xs = v => X0 + ((v - V0) / (V1 - V0)) * (X1 - X0);
   const el = (tag, a) => { const e = document.createElementNS(NS, tag); for (const k in a) e.setAttribute(k, a[k]); svg.appendChild(e); return e; };
   const bottom = top + rows.length * rowH;
@@ -1341,6 +1380,17 @@ document.querySelectorAll(".segmented [data-sub]").forEach(b => b.addEventListen
   document.querySelectorAll(".segmented [data-sub]").forEach(x => x.setAttribute("aria-selected", x === b));
   document.querySelectorAll("[data-pane]").forEach(p => p.hidden = p.dataset.pane !== key);
 }));
+
+// Phones: tuck the title away after scrolling so the tabs stay handy
+(function () {
+  const bar = document.querySelector(".topbar");
+  let compact = false;
+  window.addEventListener("scroll", () => {
+    const y = window.scrollY;
+    if (!compact && y > 90) { compact = true; bar.classList.add("scrolled"); }
+    else if (compact && y < 10) { compact = false; bar.classList.remove("scrolled"); }
+  }, { passive: true });
+})();
 
 // Follow links that change the #section (back/forward, shared links)
 window.addEventListener("hashchange", () => show((location.hash || "#home").slice(1)));
