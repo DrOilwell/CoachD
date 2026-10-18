@@ -215,6 +215,20 @@ dialog::backdrop { background: rgba(10,15,12,.45); backdrop-filter: blur(3px); }
 .sources { display: grid; gap: 6px; font-size: 0.92rem; }
 .sources strong { font-size: 0.8rem; text-transform: uppercase; letter-spacing: 0.08em; color: var(--muted); }
 
+/* Community stories */
+.stories { display: grid; gap: 18px; border-top: 1px solid var(--line); padding-top: 36px; margin-top: 8px; }
+.stories-head { display: grid; gap: 8px; }
+.stories-head h3 { font-size: 1.45rem; font-weight: 800; }
+.story-list { display: grid; gap: 14px; grid-template-columns: repeat(auto-fill, minmax(min(100%, 300px), 1fr)); }
+.story { background: var(--card); border: 1px solid var(--line); border-radius: var(--r); padding: 20px 22px; display: grid; gap: 10px; align-content: start; min-width: 0; }
+.story blockquote { margin: 0; font-size: 1.02rem; line-height: 1.7; color: var(--fg); white-space: pre-wrap; overflow-wrap: anywhere; }
+.story-by { display: flex; align-items: center; gap: 8px; flex-wrap: wrap; font-weight: 700; font-size: 0.92rem; }
+.story-by span.when { font-weight: 500; color: var(--muted); font-size: 0.85rem; }
+.avatar { width: 30px; height: 30px; border-radius: 50%; background: var(--accent-soft); color: var(--accent); display: inline-grid; place-items: center; font-weight: 800; font-size: 0.85rem; }
+.story-form { max-width: 640px; }
+.story-form h4 { font-size: 1.1rem; font-weight: 800; }
+.story-fields { display: grid; gap: 14px; grid-template-columns: repeat(auto-fit, minmax(min(100%, 220px), 1fr)); }
+
 /* Contact form */
 .form { gap: 16px; }
 .field { display: grid; gap: 6px; }
@@ -359,6 +373,37 @@ footer .wrap { padding-block: 24px; display: grid; gap: 6px; font-size: 0.85rem;
       <div class="card"><span class="label">Carbs and fats</span><p>Quinoa, brown rice, oats, whole-grain wraps, olive oil, almonds, walnuts, chia seeds, natural peanut butter</p></div>
     </div>
     <p class="note">Fasting isn't right for everyone, including people who are pregnant, on blood-sugar medication, or with a history of disordered eating. Talk to your doctor first.</p>
+
+    <div class="stories" data-page="nutrition">
+      <div class="stories-head">
+        <span class="label">Community stories</span>
+        <h3>How has eating clean changed things for you?</h3>
+        <p class="sub">Share what you eat, what changed, or what helped you stick with it.</p>
+      </div>
+      <div class="story-list" data-list><p class="muted">Loading stories…</p></div>
+      <form class="card form story-form" novalidate>
+        <h4>Share your story</h4>
+        <p class="cm-as" data-as hidden></p>
+        <div class="story-fields" data-guest>
+          <div class="field">
+            <label for="st-nutrition-name">Name</label>
+            <input id="st-nutrition-name" name="name" type="text" maxlength="60" autocomplete="name" placeholder="First name is fine">
+          </div>
+          <div class="field">
+            <label for="st-nutrition-email">Email <span class="opt">(never shown)</span></label>
+            <input id="st-nutrition-email" name="email" type="email" maxlength="200" autocomplete="email" placeholder="you@example.com">
+          </div>
+        </div>
+        <div class="field">
+          <label for="st-nutrition-story">Your story</label>
+          <textarea id="st-nutrition-story" name="story" rows="4" maxlength="2000" placeholder="Tell us what happened"></textarea>
+        </div>
+        <div class="hp" aria-hidden="true"><label for="st-nutrition-website">Website</label><input id="st-nutrition-website" name="website" type="text" tabindex="-1" autocomplete="off"></div>
+        <button class="btn primary" type="submit">Share story</button>
+        <p class="form-status" data-status role="status" aria-live="polite"></p>
+        <p class="muted small">Your story appears right away with your name. Your email stays private. Please keep medical details to yourself.</p>
+      </form>
+    </div>
   </section>
 
   <!-- MY DAY -->
@@ -374,6 +419,37 @@ footer .wrap { padding-block: 24px; display: grid; gap: 6px; font-size: 0.85rem;
       <div class="row"><span class="t">19:00</span><span class="d">Family dinner, phones in the basket</span></div>
       <div class="row"><span class="t">19:45</span><span class="d">Walk 3: 1 mile with the kids</span></div>
       <div class="row"><span class="t">21:30</span><span class="d">Screens off, lights out by 22:00</span></div>
+    </div>
+
+    <div class="stories" data-page="day">
+      <div class="stories-head">
+        <span class="label">Community stories</span>
+        <h3>How do you fit movement into your day?</h3>
+        <p class="sub">Share your routine, your walks, or what finally worked.</p>
+      </div>
+      <div class="story-list" data-list><p class="muted">Loading stories…</p></div>
+      <form class="card form story-form" novalidate>
+        <h4>Share your story</h4>
+        <p class="cm-as" data-as hidden></p>
+        <div class="story-fields" data-guest>
+          <div class="field">
+            <label for="st-day-name">Name</label>
+            <input id="st-day-name" name="name" type="text" maxlength="60" autocomplete="name" placeholder="First name is fine">
+          </div>
+          <div class="field">
+            <label for="st-day-email">Email <span class="opt">(never shown)</span></label>
+            <input id="st-day-email" name="email" type="email" maxlength="200" autocomplete="email" placeholder="you@example.com">
+          </div>
+        </div>
+        <div class="field">
+          <label for="st-day-story">Your story</label>
+          <textarea id="st-day-story" name="story" rows="4" maxlength="2000" placeholder="Tell us what happened"></textarea>
+        </div>
+        <div class="hp" aria-hidden="true"><label for="st-day-website">Website</label><input id="st-day-website" name="website" type="text" tabindex="-1" autocomplete="off"></div>
+        <button class="btn primary" type="submit">Share story</button>
+        <p class="form-status" data-status role="status" aria-live="polite"></p>
+        <p class="muted small">Your story appears right away with your name. Your email stays private. Please keep medical details to yourself.</p>
+      </form>
     </div>
   </section>
 
@@ -415,6 +491,37 @@ footer .wrap { padding-block: 24px; display: grid; gap: 6px; font-size: 0.85rem;
       <span class="label">My take</span>
       <h3>Turn it down. Never turn it off.</h3>
       <p>I agree that you can't run all four burners on high at once. But I've seen what happens when one goes out completely. When I let my health go cold for years, it nearly took the other three with it. So I keep every burner lit, give each one a minimum flame I never go below, and turn them up or down as the season demands. That's the whole idea behind Keep All Four Lit.</p>
+    </div>
+
+    <div class="stories" data-page="burners">
+      <div class="stories-head">
+        <span class="label">Community stories</span>
+        <h3>How do you keep your burners lit?</h3>
+        <p class="sub">Share how you balance family, friends, health and work.</p>
+      </div>
+      <div class="story-list" data-list><p class="muted">Loading stories…</p></div>
+      <form class="card form story-form" novalidate>
+        <h4>Share your story</h4>
+        <p class="cm-as" data-as hidden></p>
+        <div class="story-fields" data-guest>
+          <div class="field">
+            <label for="st-burners-name">Name</label>
+            <input id="st-burners-name" name="name" type="text" maxlength="60" autocomplete="name" placeholder="First name is fine">
+          </div>
+          <div class="field">
+            <label for="st-burners-email">Email <span class="opt">(never shown)</span></label>
+            <input id="st-burners-email" name="email" type="email" maxlength="200" autocomplete="email" placeholder="you@example.com">
+          </div>
+        </div>
+        <div class="field">
+          <label for="st-burners-story">Your story</label>
+          <textarea id="st-burners-story" name="story" rows="4" maxlength="2000" placeholder="Tell us what happened"></textarea>
+        </div>
+        <div class="hp" aria-hidden="true"><label for="st-burners-website">Website</label><input id="st-burners-website" name="website" type="text" tabindex="-1" autocomplete="off"></div>
+        <button class="btn primary" type="submit">Share story</button>
+        <p class="form-status" data-status role="status" aria-live="polite"></p>
+        <p class="muted small">Your story appears right away with your name. Your email stays private. Please keep medical details to yourself.</p>
+      </form>
     </div>
   </section>
 
@@ -610,6 +717,37 @@ footer .wrap { padding-block: 24px; display: grid; gap: 6px; font-size: 0.85rem;
       <div class="card"><span class="label">Whole foods</span><h3>Processed food makes you eat more</h3><p>People on ultra-processed diets ate about 500 more calories a day.</p><span class="cite">Hall et al., Cell Metabolism, 2019</span></div>
       <div class="card"><span class="label">Friendship</span><h3>Friends add years</h3><p>Strong social ties are linked to a longer life.</p><span class="cite">Holt-Lunstad et al., PLOS Medicine, 2010</span></div>
     </div>
+    </div>
+
+    <div class="stories" data-page="science">
+      <div class="stories-head">
+        <span class="label">Community stories</span>
+        <h3>What did you learn, or what changed for you?</h3>
+        <p class="sub">Share what surprised you or what you've tried.</p>
+      </div>
+      <div class="story-list" data-list><p class="muted">Loading stories…</p></div>
+      <form class="card form story-form" novalidate>
+        <h4>Share your story</h4>
+        <p class="cm-as" data-as hidden></p>
+        <div class="story-fields" data-guest>
+          <div class="field">
+            <label for="st-science-name">Name</label>
+            <input id="st-science-name" name="name" type="text" maxlength="60" autocomplete="name" placeholder="First name is fine">
+          </div>
+          <div class="field">
+            <label for="st-science-email">Email <span class="opt">(never shown)</span></label>
+            <input id="st-science-email" name="email" type="email" maxlength="200" autocomplete="email" placeholder="you@example.com">
+          </div>
+        </div>
+        <div class="field">
+          <label for="st-science-story">Your story</label>
+          <textarea id="st-science-story" name="story" rows="4" maxlength="2000" placeholder="Tell us what happened"></textarea>
+        </div>
+        <div class="hp" aria-hidden="true"><label for="st-science-website">Website</label><input id="st-science-website" name="website" type="text" tabindex="-1" autocomplete="off"></div>
+        <button class="btn primary" type="submit">Share story</button>
+        <p class="form-status" data-status role="status" aria-live="polite"></p>
+        <p class="muted small">Your story appears right away with your name. Your email stays private. Please keep medical details to yourself.</p>
+      </form>
     </div>
   </section>
 
@@ -1190,6 +1328,70 @@ document.querySelectorAll(".segmented [data-sub]").forEach(b => b.addEventListen
 
 // Follow links that change the #section (back/forward, shared links)
 window.addEventListener("hashchange", () => show((location.hash || "#home").slice(1)));
+
+// Community stories (Nutrition, My Day, Four Burners, Science)
+document.querySelectorAll(".stories[data-page]").forEach(box => {
+  const page = box.dataset.page;
+  const list = box.querySelector("[data-list]");
+  const form = box.querySelector("form");
+  const status = box.querySelector("[data-status]");
+  const btn = form.querySelector('button[type="submit"]');
+  const setS = (t, k) => { status.textContent = t; status.className = "form-status" + (k ? " " + k : ""); };
+  async function load() {
+    try {
+      const out = await (await fetch(apiBase() + "/api/testimonials?page=" + page)).json();
+      const items = out.stories || [];
+      list.innerHTML = "";
+      if (!items.length) { list.innerHTML = '<p class="muted">No stories yet. Be the first to share yours.</p>'; return; }
+      items.forEach(it => {
+        const card = document.createElement("div"); card.className = "story";
+        const q = document.createElement("blockquote"); q.textContent = it.story;
+        const by = document.createElement("div"); by.className = "story-by";
+        const av = document.createElement("span"); av.className = "avatar"; av.textContent = (it.name || "?").trim().charAt(0).toUpperCase();
+        const nm = document.createElement("span"); nm.textContent = it.name;
+        by.append(av, nm);
+        if (it.member) { const b = document.createElement("span"); b.className = "badge"; b.textContent = "Member"; by.append(b); }
+        const wh = document.createElement("span"); wh.className = "when"; wh.textContent = fmtDate(it.created_at); by.append(wh);
+        card.append(q, by);
+        list.appendChild(card);
+      });
+    } catch (e) { list.innerHTML = '<p class="muted">Stories couldn\'t load right now.</p>'; }
+  }
+  form.addEventListener("submit", async (e) => {
+    e.preventDefault();
+    const fd = new FormData(form);
+    const data = { page, name: (fd.get("name") || "").trim(), email: (fd.get("email") || "").trim(), story: (fd.get("story") || "").trim(), website: fd.get("website") || "" };
+    const m = getMember();
+    if (m) { data.memberKey = m.token; data.name = m.name; }
+    if (!m && !data.name) { setS("Please add your name.", "err"); return; }
+    if (!m && !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(data.email)) { setS("Please enter your email. It stays private.", "err"); return; }
+    if (!data.story) { setS("Please write your story.", "err"); return; }
+    btn.disabled = true; btn.textContent = "Sharing…"; setS("");
+    try {
+      const res = await fetch(apiBase() + "/api/testimonials", { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify(data) });
+      const out = await res.json().catch(() => ({}));
+      if (!res.ok || !out.ok) throw new Error(out.error || "failed");
+      if (m && !out.member) { setMember(null); renderMember(); }
+      form.reset();
+      if (out.pending) setS("Thanks! Stories with web links get a quick review first, so yours will appear shortly.", "ok");
+      else { await load(); setS("Shared. Thank you for inspiring someone today!", "ok"); }
+    } catch (err) {
+      setS(err.message && err.message !== "failed" && !/fetch|network/i.test(err.message) ? err.message : "Your story couldn't be shared. Try again in a moment.", "err");
+    } finally { btn.disabled = false; btn.textContent = "Share story"; }
+  });
+  load();
+});
+function renderStoryForms() {
+  const m = getMember();
+  document.querySelectorAll(".stories form").forEach(f => {
+    f.querySelector("[data-guest]").hidden = !!m;
+    const as = f.querySelector("[data-as]"); as.hidden = !m;
+    if (m) { as.innerHTML = ""; as.append("Sharing as " + m.name + " "); const b = document.createElement("span"); b.className = "badge"; b.textContent = "Member"; as.append(b); }
+  });
+}
+renderStoryForms();
+const _renderMember = renderMember;
+renderMember = function () { _renderMember(); renderStoryForms(); };
 
 // Buy me a coffee
 if (COFFEE_URL) {

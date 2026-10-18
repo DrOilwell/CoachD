@@ -61,3 +61,21 @@ CREATE TABLE IF NOT EXISTS member_keys (
 -- Approve and reply:   UPDATE comments SET approved = 1, reply = 'Thanks! Great question.' WHERE id = 1;
 -- Hide one again:      UPDATE comments SET approved = 0 WHERE id = 1;
 -- Delete spam:         DELETE FROM comments WHERE id = 1;
+
+-- Community stories (Nutrition, My Day, Four Burners, Science). Email is private.
+CREATE TABLE IF NOT EXISTS testimonials (
+  id INTEGER PRIMARY KEY AUTOINCREMENT,
+  created_at TEXT NOT NULL DEFAULT (datetime('now')),
+  page TEXT NOT NULL,
+  name TEXT NOT NULL,
+  email TEXT NOT NULL,
+  story TEXT NOT NULL,
+  approved INTEGER NOT NULL DEFAULT 1,
+  member INTEGER NOT NULL DEFAULT 0
+);
+-- STORIES
+-- All stories:          SELECT id, page, name, email, story, approved FROM testimonials ORDER BY created_at DESC;
+-- Held (had a link):    SELECT id, page, name, story FROM testimonials WHERE approved = 0;
+-- Approve one:          UPDATE testimonials SET approved = 1 WHERE id = 1;
+-- Hide one:             UPDATE testimonials SET approved = 0 WHERE id = 1;
+-- Delete one:           DELETE FROM testimonials WHERE id = 1;
