@@ -1,6 +1,6 @@
 // Cloudflare Pages Function: /api/comments
 // GET  /api/comments?post=<postId>  -> approved comments for a blog post
-// POST /api/comments                -> new comment, held for approval
+// POST /api/comments                -> new comment, shown right away (held only if it contains a link)
 // Comments live in the D1 database bound as `DB` (table: comments).
 
 const ALLOWED_HOSTS = [
@@ -60,7 +60,7 @@ export async function onRequestGet({ request, env }) {
     "SELECT name, comment, reply, created_at FROM comments WHERE post_id = ?1 AND approved = 1 ORDER BY created_at ASC LIMIT 200"
   ).bind(post).all();
 
-  return json({ ok: true, comments: results || [] }, 200, origin, "public, max-age=60");
+  return json({ ok: true, comments: results || [] }, 200, origin, "no-store");
 }
 
 export async function onRequestPost({ request, env }) {
@@ -87,15 +87,19 @@ export async function onRequestPost({ request, env }) {
   if (!comment) return send({ ok: false, error: "Please write a comment." }, 400);
   if (!env.DB) return send({ ok: false, error: "Database not connected." }, 500);
 
+  // Comments go live right away. Ones containing links (the usual sign of spam) wait for review.
+  const hasLink = /(https?:\/\/|www\.|\b[a-z0-9-]+\.(com|net|org|io|ru|xyz|info|biz|link|click)\b)/i.test(name + " " + comment);
+  const approved = hasLink ? 0 : 1;
+
   try {
     await env.DB.prepare(
-      "INSERT INTO comments (post_id, name, comment) VALUES (?1, ?2, ?3)"
-    ).bind(post, name, comment).run();
+      "INSERT INTO comments (post_id, name, comment, approved) VALUES (?1, ?2, ?3, ?4)"
+    ).bind(post, name, comment, approved).run();
   } catch (err) {
     return send({ ok: false, error: "Could not save your comment." }, 500);
   }
 
-  return send({ ok: true, pending: true });
+  return send({ ok: true, pending: !approved });
 }
 
 export async function onRequest() {

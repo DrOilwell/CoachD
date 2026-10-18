@@ -423,7 +423,7 @@ footer .wrap { padding-block: 24px; display: grid; gap: 6px; font-size: 0.85rem;
         <div class="hp" aria-hidden="true"><label for="cm-website">Website</label><input id="cm-website" name="website" type="text" tabindex="-1" autocomplete="off"></div>
         <button class="btn primary" type="submit" id="cm-send">Post comment</button>
         <p class="form-status" id="cm-status" role="status" aria-live="polite"></p>
-        <p class="muted small">Comments appear after a quick review. Please be kind and keep medical details private.</p>
+        <p class="muted small">Please be kind and keep medical details private.</p>
       </form>
     </div>
   </div>
@@ -640,7 +640,12 @@ cmForm.addEventListener("submit", async (e) => {
     const out = await res.json().catch(() => ({}));
     if (!res.ok || !out.ok) throw new Error(out.error || "failed");
     cmForm.reset();
-    setS("Thanks! Your comment will appear after a quick review.", "ok");
+    if (out.pending) {
+      setS("Thanks! Comments with links are reviewed first, so yours will appear shortly.", "ok");
+    } else {
+      loadComments(data.post);
+      setS("Posted. Thanks for joining the conversation!", "ok");
+    }
   } catch (err) {
     setS("Your comment couldn't be posted. Try again in a moment.", "err");
   } finally {
