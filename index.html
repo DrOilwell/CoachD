@@ -244,6 +244,20 @@ dialog::backdrop { background: rgba(10,15,12,.45); backdrop-filter: blur(3px); }
 .story-form h4 { font-size: 1.1rem; font-weight: 800; }
 .story-fields { display: grid; gap: 14px; grid-template-columns: repeat(auto-fit, minmax(min(100%, 220px), 1fr)); }
 
+/* "More" dropdown */
+.tabs { overflow: visible; }
+.more { position: relative; }
+.more-btn { display: inline-flex; align-items: center; gap: 4px; border: 1px solid var(--line); background: var(--card); padding: 6px 10px 6px 12px; border-radius: 999px; font-weight: 600; font-size: 0.8rem; color: var(--muted); cursor: pointer; white-space: nowrap; }
+.more-btn svg { width: 14px; height: 14px; transition: transform .15s; }
+.more-btn:hover { color: var(--fg); border-color: var(--fg); }
+.more.open .more-btn svg { transform: rotate(180deg); }
+.more-btn.active { background: var(--fg); color: var(--bg); border-color: var(--fg); font-size: 1rem; font-weight: 800; padding: 9px 14px 9px 20px; }
+.more-menu { display: none; position: absolute; top: calc(100% + 8px); left: 0; z-index: 40; min-width: 210px; background: var(--card); border: 1px solid var(--line); border-radius: 16px; box-shadow: var(--shadow); padding: 6px; }
+.more.open .more-menu { display: grid; gap: 2px; }
+.more-menu .tab, .more-menu .tab[aria-selected="true"] { border: 0; background: none; text-align: left; font-size: 0.95rem; font-weight: 600; color: var(--fg); padding: 10px 12px; border-radius: 10px; }
+.more-menu .tab:hover { background: var(--surface); }
+.more-menu .tab[aria-selected="true"] { background: var(--accent-soft); color: var(--accent); font-weight: 800; }
+
 /* Menu button (phones only) */
 .menu-btn { display: none; align-items: center; justify-content: center; gap: 6px; border: 1px solid var(--line); background: var(--card); width: 38px; height: 38px; padding: 0; border-radius: 999px; font-weight: 700; font-size: 0.82rem; cursor: pointer; }
 .menu-btn svg { width: 18px; height: 18px; }
@@ -251,6 +265,25 @@ dialog::backdrop { background: rgba(10,15,12,.45); backdrop-filter: blur(3px); }
 .topbar.menu-open .menu-btn .m1 { transform: translateY(5px) rotate(45deg); }
 .topbar.menu-open .menu-btn .m2 { opacity: 0; }
 .topbar.menu-open .menu-btn .m3 { transform: translateY(-5px) rotate(-45deg); }
+
+/* Eating-window scale and MyPlate */
+.ew-bars { display: grid; gap: 8px; }
+.ew-day { display: grid; grid-template-columns: 44px 1fr; gap: 10px; align-items: center; }
+.ew-day > span { font-size: 0.8rem; font-weight: 700; color: var(--muted); }
+.ew-track { position: relative; height: 34px; border-radius: 10px; background: var(--surface); border: 1px solid var(--line); overflow: hidden; }
+.ew-eat { position: absolute; top: 0; bottom: 0; background: var(--accent); color: #fff; display: flex; align-items: center; justify-content: center; font-size: 0.78rem; font-weight: 800; white-space: nowrap; overflow: hidden; transition: left .25s, width .25s; }
+.ew-ticks { display: grid; grid-template-columns: 44px 1fr; gap: 10px; }
+.ew-ticks div { display: flex; justify-content: space-between; font-size: 0.75rem; color: var(--muted); font-variant-numeric: tabular-nums; }
+.ew-info { display: grid; grid-template-columns: auto auto 1fr; gap: 18px; align-items: start; }
+.ew-stat { display: grid; color: var(--text2); font-weight: 600; font-size: 0.9rem; }
+.ew-text p { color: var(--text2); }
+#ew-opts button[aria-pressed="true"], #mp-opts button[aria-pressed="true"] { background: var(--card); color: var(--fg); box-shadow: 0 1px 3px rgba(0,0,0,.12); }
+.plate-grid { display: grid; gap: 12px; grid-template-columns: repeat(auto-fit, minmax(min(100%, 170px), 1fr)); }
+.plate { border-radius: 14px; padding: 14px 16px; background: var(--surface); display: grid; gap: 4px; border-top: 4px solid var(--pc); }
+.plate b { font-size: 1.5rem; font-weight: 800; letter-spacing: -0.02em; font-variant-numeric: tabular-nums; }
+.plate span { font-weight: 700; }
+.plate small { color: var(--muted); font-size: 0.85rem; line-height: 1.45; }
+@media (max-width: 600px) { .ew-info { grid-template-columns: auto auto; } .ew-text { grid-column: 1 / -1; } }
 
 /* Phones */
 #dc-svg.compact, #cf-svg.compact, #ns-svg.compact { min-width: 0; }
@@ -270,6 +303,10 @@ dialog::backdrop { background: rgba(10,15,12,.45); backdrop-filter: blur(3px); }
   .topbar.menu-open .tabs { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; padding-block: 4px 14px; overflow: visible; }
   .topbar.menu-open .tab, .topbar.menu-open .tab[aria-selected="true"] { font-size: 0.98rem; font-weight: 700; padding: 12px 14px; text-align: left; border-radius: 12px; color: var(--fg); }
   .topbar.menu-open .tab[aria-selected="true"] { color: var(--bg); }
+  .more, .topbar.menu-open .more-menu { display: contents; }
+  .more-btn { display: none; }
+  .topbar.menu-open .more-menu .tab { background: var(--card); border: 1px solid var(--line); }
+  .topbar.menu-open .more-menu .tab[aria-selected="true"] { background: var(--fg); color: var(--bg); border-color: var(--fg); }
   .hero { padding: 22px 18px; border-radius: 22px; }
   .hero h1 { font-size: clamp(2rem, 9vw, 2.6rem); }
   .cta-row .btn { flex: 1 1 auto; justify-content: center; }
@@ -344,12 +381,18 @@ footer .wrap { padding-block: 24px; display: grid; gap: 6px; font-size: 0.85rem;
     </div>
     <nav class="tabs" id="tabs-nav" role="tablist" aria-label="Sections">
       <button class="tab" role="tab" data-tab="home" aria-selected="true">Home</button>
-      <button class="tab" role="tab" data-tab="blog" aria-selected="false">Blog</button>
-      <button class="tab" role="tab" data-tab="nutrition" aria-selected="false">My Day &amp; Nutrition</button>
       <button class="tab" role="tab" data-tab="science" aria-selected="false">The Science</button>
-      <button class="tab" role="tab" data-tab="about" aria-selected="false">About</button>
       <button class="tab" role="tab" data-tab="join" aria-selected="false" id="join-tab">Join free</button>
-      <button class="tab" role="tab" data-tab="contact" aria-selected="false">Contact</button>
+      <div class="more" id="more">
+        <button class="more-btn" id="more-btn" type="button" aria-haspopup="true" aria-expanded="false"><span id="more-label">More</span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M6 9l6 6 6-6"/></svg></button>
+        <div class="more-menu" role="group" aria-label="More pages">
+          <button class="tab" role="tab" data-tab="nutrition" aria-selected="false">Nutrition</button>
+          <button class="tab" role="tab" data-tab="burners" aria-selected="false">Four Burners</button>
+          <button class="tab" role="tab" data-tab="about" aria-selected="false">About</button>
+          <button class="tab" role="tab" data-tab="blog" aria-selected="false">Blog</button>
+          <button class="tab" role="tab" data-tab="contact" aria-selected="false">Contact</button>
+        </div>
+      </div>
     </nav>
   </div>
 </header>
@@ -389,37 +432,42 @@ footer .wrap { padding-block: 24px; display: grid; gap: 6px; font-size: 0.85rem;
 
   <!-- MY DAY & NUTRITION -->
   <section class="page" id="nutrition" role="tabpanel" hidden>
-    <div class="page-head"><h2>My Day &amp; Nutrition</h2><p class="sub">How I fit five miles into a full day, and how I eat to fuel it.</p></div>
-
-    <div class="block" id="day-part">
-      <h3 class="pane-title">My Day</h3>
-      <p class="sub">Five miles split into three walks, fitted around duty, practice and family.</p>
-    <div class="list">
-      <div class="row"><span class="t">5:00</span><span class="d">Wake up, water, 5 minutes of mobility</span></div>
-      <div class="row"><span class="t">5:15</span><span class="d">Walk 1: 3 miles, fasted<small>Quiet time to think or pray</small></span></div>
-      <div class="row"><span class="t">6:30</span><span class="d">Group PT / Personal PT</span></div>
-      <div class="row"><span class="t">9:00</span><span class="d">Duty day<small>Hardest work first</small></span></div>
-      <div class="row"><span class="t">12:00</span><span class="d">First meal, then Walk 2: 1 mile</span></div>
-      <div class="row"><span class="t">17:30</span><span class="d">Soccer practice (Tue/Thu) or strength training (Mon/Wed/Fri)</span></div>
-      <div class="row"><span class="t">19:00</span><span class="d">Family dinner, phones in the basket</span></div>
-      <div class="row"><span class="t">19:45</span><span class="d">Walk 3: 1 mile with the kids</span></div>
-      <div class="row"><span class="t">21:30</span><span class="d">Screens off, lights out by 22:00</span></div>
-    </div>
-    </div>
+    <div class="page-head"><h2>Nutrition</h2><p class="sub">What to eat each day, when to eat it, and how I put it into practice.</p></div>
 
     <div class="block" id="nutrition-part">
       <h3 class="pane-title">Nutrition</h3>
       <p class="sub">No breakfast. A 16-hour fast, an 8-hour eating window, whole foods and no alcohol.</p>
 
-    <div class="card window">
-      <h3>My daily window</h3>
-      <div class="track" role="img" aria-label="Fasting from 8 PM to noon, eating from noon to 8 PM">
-        <span class="fast-label" style="left:0">Fasting</span>
-        <div class="eat">Eating 12–8 PM</div>
-        <span class="fast-label" style="right:0">Fast</span>
+    <div class="card daychart">
+      <h3>Eating windows, from easy to advanced</h3>
+      <p>Time-restricted eating means eating within a set window and fasting the rest. Tap an option to see how it fits a day. Shaded green is when you eat.</p>
+      <div class="segmented" role="group" aria-label="Eating window" id="ew-opts">
+        <button type="button" data-ew="12" aria-pressed="false">12/12</button>
+        <button type="button" data-ew="14" aria-pressed="false">14/10</button>
+        <button type="button" data-ew="16" aria-pressed="true">16/8</button>
+        <button type="button" data-ew="18" aria-pressed="false">18/6</button>
+        <button type="button" data-ew="20" aria-pressed="false">20/4</button>
+        <button type="button" data-ew="36" aria-pressed="false">36 hours</button>
       </div>
-      <div class="ticks"><span>12 AM</span><span>6 AM</span><span>12 PM</span><span>6 PM</span><span>12 AM</span></div>
-      <p>Mornings are water, black coffee or plain tea. My first meal comes at noon, my last bite by 8 PM. On heavy training days I may open the window a little earlier.</p>
+      <div class="ew-bars" id="ew-bars"></div>
+      <div class="ew-info">
+        <div class="ew-stat"><span class="cf-big" id="ew-fast">16 hrs</span><span>fasting</span></div>
+        <div class="ew-stat"><span class="cf-big" id="ew-eat">8 hrs</span><span>eating</span></div>
+        <div class="ew-text"><strong id="ew-title"></strong><p id="ew-desc"></p></div>
+      </div>
+      <p class="muted small">Water, black coffee and plain tea are fine while fasting. Longer fasts aren't for everyone, including people who are pregnant, take blood-sugar medication or have a history of disordered eating. Talk to your doctor first.</p>
+    </div>
+
+    <div class="card">
+      <span class="label">Daily guidelines · MyPlate.gov</span>
+      <h3>What a day of eating should include</h3>
+      <p>MyPlate, the USDA's official guide, sets daily amounts for five food groups. Pick the level that fits you; many active adults need the higher one.</p>
+      <div class="segmented" role="group" aria-label="Calorie level" id="mp-opts">
+        <button type="button" data-mp="2000" aria-pressed="true">2,000 cal · standard</button>
+        <button type="button" data-mp="2400" aria-pressed="false">2,400 cal · active</button>
+      </div>
+      <div class="plate-grid" id="mp-grid"></div>
+      <p class="muted small">Make half your plate fruits and vegetables, at least half your grains whole grains, and vary your protein. Keep sodium under 2,300 mg, and added sugars and saturated fat each under 10% of calories. Your exact needs depend on age, sex, size and activity. <a href="https://www.myplate.gov/myplate-plan" target="_blank" rel="noopener">Get your personal MyPlate Plan</a>.</p>
     </div>
 
     <div class="two">
@@ -449,6 +497,23 @@ footer .wrap { padding-block: 24px; display: grid; gap: 6px; font-size: 0.85rem;
       <div class="card"><span class="label">Carbs and fats</span><p>Quinoa, brown rice, oats, whole-grain wraps, olive oil, almonds, walnuts, chia seeds, natural peanut butter</p></div>
     </div>
     <p class="note">Fasting isn't right for everyone, including people who are pregnant, on blood-sugar medication, or with a history of disordered eating. Talk to your doctor first.</p>
+    </div>
+
+
+    <div class="block" id="day-part">
+      <h3 class="pane-title">My Day</h3>
+      <p class="sub">Five miles split into three walks, fitted around duty, practice and family.</p>
+    <div class="list">
+      <div class="row"><span class="t">5:00</span><span class="d">Wake up, water, 5 minutes of mobility</span></div>
+      <div class="row"><span class="t">5:15</span><span class="d">Walk 1: 3 miles, fasted<small>Quiet time to think or pray</small></span></div>
+      <div class="row"><span class="t">6:30</span><span class="d">Group PT / Personal PT</span></div>
+      <div class="row"><span class="t">9:00</span><span class="d">Duty day<small>Hardest work first</small></span></div>
+      <div class="row"><span class="t">12:00</span><span class="d">First meal, then Walk 2: 1 mile</span></div>
+      <div class="row"><span class="t">17:30</span><span class="d">Soccer practice (Tue/Thu) or strength training (Mon/Wed/Fri)</span></div>
+      <div class="row"><span class="t">19:00</span><span class="d">Family dinner, phones in the basket</span></div>
+      <div class="row"><span class="t">19:45</span><span class="d">Walk 3: 1 mile with the kids</span></div>
+      <div class="row"><span class="t">21:30</span><span class="d">Screens off, lights out by 22:00</span></div>
+    </div>
     </div>
 
     <div class="stories" data-page="nutrition">
@@ -711,7 +776,7 @@ footer .wrap { padding-block: 24px; display: grid; gap: 6px; font-size: 0.85rem;
     </div>
   </section>
 
-  <!-- ABOUT & FOUR BURNERS -->
+  <!-- ABOUT -->
   <section class="page" id="about" role="tabpanel" hidden>
     <div class="page-head"><span class="label">About me</span><h2>Hi, I'm Coach E.</h2></div>
     <div class="prose">
@@ -723,9 +788,16 @@ footer .wrap { padding-block: 24px; display: grid; gap: 6px; font-size: 0.85rem;
       <p class="signoff">Let's get to work.<br><span>— Coach E</span></p>
     </div>
 
-    <div class="block" id="burners-part">
-      <h3 class="pane-title">The Four Burners</h3>
-      <p class="sub">The old theory says turn one off to succeed. I say turn the flame down, never off, and check every burner each Sunday.</p>
+
+    <div class="card coffee" data-coffee hidden>
+      <h3>Support the work</h3>
+      <p>If something here helped you, you can buy me a coffee. It keeps the free posts coming.</p>
+      <a class="btn coffee-btn" data-coffee-link href="#" target="_blank" rel="noopener">Buy me a coffee</a>
+    </div>
+  </section>
+  <!-- FOUR BURNERS -->
+  <section class="page" id="burners" role="tabpanel" hidden>
+    <div class="page-head"><h2>The Four Burners</h2><p class="sub">The old theory says turn one off to succeed. I say turn the flame down, never off, and check every burner each Sunday.</p></div>
     <div class="grid">
       <div class="card burner"><h3>Family</h3><p>One undistracted meal a day. A walk with the kids every evening. Date night every other week.</p><span class="min">Minimum: one real meal together</span></div>
       <div class="card burner"><h3>Friends</h3><p>Sunday walk-and-talk with friends. One call a week to an old battle buddy.</p><span class="min">Minimum: one real conversation a week</span></div>
@@ -762,7 +834,6 @@ footer .wrap { padding-block: 24px; display: grid; gap: 6px; font-size: 0.85rem;
       <h3>Turn it down. Never turn it off.</h3>
       <p>I agree that you can't run all four burners on high at once. But I've seen what happens when one goes out completely. When I let my health go cold for years, it nearly took the other three with it. So I keep every burner lit, give each one a minimum flame I never go below, and turn them up or down as the season demands. That's the whole idea behind Keep All Four Lit.</p>
     </div>
-    </div>
 
     <div class="stories" data-page="burners">
       <div class="stories-head">
@@ -794,13 +865,8 @@ footer .wrap { padding-block: 24px; display: grid; gap: 6px; font-size: 0.85rem;
         <p class="muted small">Your story appears right away with your name. Your email stays private. Please keep medical details to yourself.</p>
       </form>
     </div>
-
-    <div class="card coffee" data-coffee hidden>
-      <h3>Support the work</h3>
-      <p>If something here helped you, you can buy me a coffee. It keeps the free posts coming.</p>
-      <a class="btn coffee-btn" data-coffee-link href="#" target="_blank" rel="noopener">Buy me a coffee</a>
-    </div>
   </section>
+
 
   <!-- JOIN -->
   <section class="page" id="join" role="tabpanel" hidden>
@@ -1012,7 +1078,22 @@ document.getElementById("close").addEventListener("click", () => dlg.close());
 dlg.addEventListener("click", e => { if (e.target === dlg) dlg.close(); });
 
 const tabs = document.querySelectorAll(".tabs .tab");
-const ALIASES = { day: ["nutrition", "day-part"], burners: ["about", "burners-part"] };
+const ALIASES = { day: ["nutrition", "day-part"] };
+function syncMore(id) {
+  const btn = document.getElementById("more-btn"), lab = document.getElementById("more-label");
+  if (!btn) return;
+  const item = document.querySelector(`.more-menu .tab[data-tab="${id}"]`);
+  btn.classList.toggle("active", !!item);
+  lab.textContent = item ? item.textContent : "More";
+  document.getElementById("more").classList.remove("open");
+  btn.setAttribute("aria-expanded", "false");
+}
+(function () {
+  const more = document.getElementById("more"), btn = document.getElementById("more-btn");
+  btn.addEventListener("click", e => { e.stopPropagation(); const o = !more.classList.contains("open"); more.classList.toggle("open", o); btn.setAttribute("aria-expanded", o); });
+  document.addEventListener("click", e => { if (!more.contains(e.target)) { more.classList.remove("open"); btn.setAttribute("aria-expanded", "false"); } });
+  document.addEventListener("keydown", e => { if (e.key === "Escape") { more.classList.remove("open"); btn.setAttribute("aria-expanded", "false"); } });
+})();
 function show(id) {
   let jump = null;
   if (ALIASES[id]) { jump = ALIASES[id][1]; id = ALIASES[id][0]; }
@@ -1020,9 +1101,10 @@ function show(id) {
   document.querySelectorAll(".page").forEach(s => s.hidden = s.id !== id);
   tabs.forEach(t => t.setAttribute("aria-selected", t.dataset.tab === id));
   const cur = document.querySelector(`.tabs .tab[data-tab="${id}"]`);
-  if (cur) { const strip = cur.parentElement; strip.scrollTo({ left: Math.max(0, cur.offsetLeft - (strip.clientWidth - cur.offsetWidth) / 2), behavior: "smooth" }); }
+  if (cur && cur.parentElement.classList.contains("tabs")) { const strip = cur.parentElement; strip.scrollTo({ left: Math.max(0, cur.offsetLeft - (strip.clientWidth - cur.offsetWidth) / 2), behavior: "smooth" }); }
   try { history.replaceState(null, "", "#" + id); } catch (e) {}
   window.scrollTo({ top: 0 });
+  syncMore(id);
   if (jump) { const el = document.getElementById(jump), bar = document.querySelector(".topbar"); if (el) window.scrollTo({ top: el.getBoundingClientRect().top + window.scrollY - bar.offsetHeight - 12 }); }
 }
 tabs.forEach(t => t.addEventListener("click", () => show(t.dataset.tab)));
@@ -1367,6 +1449,76 @@ renderMember();
   });
   el("line", { class: "ref", x1: xs(1), x2: xs(1), y1: top - 4, y2: bottom });
   const r = el("text", { x: xs(1) + 6, y: top + 2 }); r.textContent = "";
+})();
+
+// Eating-window scale
+(function () {
+  const wrap = document.getElementById("ew-bars");
+  if (!wrap) return;
+  const OPTS = {
+    12: { title: "12/12 · the easy start", desc: "Eat from 8 AM to 8 PM. Mostly it means no late-night snacking. A great first step." },
+    14: { title: "14/10 · building the habit", desc: "Eat from 10 AM to 8 PM. Push breakfast a little later and keep evenings closed." },
+    16: { title: "16/8 · what I do", desc: "Eat from noon to 8 PM. Skip breakfast, then two or three solid, protein-heavy meals. The most studied and popular schedule." },
+    18: { title: "18/6 · advanced", desc: "Eat from 2 PM to 8 PM. Harder to fit enough protein and vegetables into six hours, so plan your meals." },
+    20: { title: "20/4 · very advanced", desc: "Eat from 4 PM to 8 PM. Usually one big meal plus a snack. Not a daily plan for most people." },
+    36: { title: "36 hours · occasional only", desc: "Dinner on day one, then nothing but water, black coffee or tea until breakfast on day three. An occasional reset, not a routine. Check with your doctor first." }
+  };
+  const fmt = h => { h = ((h % 24) + 24) % 24; const ap = h < 12 ? "AM" : "PM"; const x = h % 12 === 0 ? 12 : h % 12; return x + " " + ap; };
+  function draw(fastH) {
+    wrap.innerHTML = "";
+    const days = fastH === 36 ? 3 : 1;
+    for (let d = 0; d < days; d++) {
+      let eat = null;
+      if (fastH === 36) { if (d === 0) eat = [12, 20]; if (d === 2) eat = [8, 20]; }
+      else eat = [20 - (24 - fastH), 20];
+      const row = document.createElement("div"); row.className = "ew-day";
+      const lab = document.createElement("span"); lab.textContent = days > 1 ? "Day " + (d + 1) : "Day";
+      const tr = document.createElement("div"); tr.className = "ew-track";
+      if (eat) {
+        const e = document.createElement("div"); e.className = "ew-eat";
+        e.style.left = (eat[0] / 24 * 100) + "%"; e.style.width = ((eat[1] - eat[0]) / 24 * 100) + "%";
+        e.textContent = fmt(eat[0]) + "–" + fmt(eat[1]);
+        tr.appendChild(e);
+      }
+      row.append(lab, tr); wrap.appendChild(row);
+    }
+    const t = document.createElement("div"); t.className = "ew-ticks";
+    t.innerHTML = "<span></span><div><span>12 AM</span><span>6 AM</span><span>12 PM</span><span>6 PM</span><span>12 AM</span></div>";
+    wrap.appendChild(t);
+    document.getElementById("ew-fast").textContent = fastH + " hrs";
+    document.getElementById("ew-eat").textContent = fastH === 36 ? "—" : (24 - fastH) + " hrs";
+    document.getElementById("ew-title").textContent = OPTS[fastH].title;
+    document.getElementById("ew-desc").textContent = OPTS[fastH].desc;
+  }
+  document.querySelectorAll("#ew-opts [data-ew]").forEach(b => b.addEventListener("click", () => {
+    document.querySelectorAll("#ew-opts [data-ew]").forEach(x => x.setAttribute("aria-pressed", x === b));
+    draw(parseInt(b.dataset.ew, 10));
+  }));
+  draw(16);
+})();
+
+// MyPlate daily amounts (USDA MyPlate food plans)
+(function () {
+  const grid = document.getElementById("mp-grid");
+  if (!grid) return;
+  const PLANS = {
+    2000: [["Vegetables", "2½ cups", "Spinach, broccoli, peppers, sweet potatoes", "var(--accent)"], ["Fruits", "2 cups", "Berries, apples, bananas. Whole fruit over juice", "var(--flame)"], ["Grains", "6 oz", "At least half whole: oats, brown rice, quinoa", "#c99a2e"], ["Protein", "5½ oz", "Chicken, fish, eggs, beans, lean beef, nuts", "var(--c-ghrelin)"], ["Dairy", "3 cups", "Greek yogurt, milk, cheese, or fortified soy", "var(--c-sugar)"]],
+    2400: [["Vegetables", "3 cups", "Spinach, broccoli, peppers, sweet potatoes", "var(--accent)"], ["Fruits", "2 cups", "Berries, apples, bananas. Whole fruit over juice", "var(--flame)"], ["Grains", "8 oz", "At least half whole: oats, brown rice, quinoa", "#c99a2e"], ["Protein", "6½ oz", "Chicken, fish, eggs, beans, lean beef, nuts", "var(--c-ghrelin)"], ["Dairy", "3 cups", "Greek yogurt, milk, cheese, or fortified soy", "var(--c-sugar)"]]
+  };
+  function draw(level) {
+    grid.innerHTML = "";
+    PLANS[level].forEach(([name, amt, ex, color]) => {
+      const c = document.createElement("div"); c.className = "plate"; c.style.setProperty("--pc", color);
+      c.innerHTML = "<span></span><b></b><small></small>";
+      c.querySelector("span").textContent = name; c.querySelector("b").textContent = amt; c.querySelector("small").textContent = ex;
+      grid.appendChild(c);
+    });
+  }
+  document.querySelectorAll("#mp-opts [data-mp]").forEach(b => b.addEventListener("click", () => {
+    document.querySelectorAll("#mp-opts [data-mp]").forEach(x => x.setAttribute("aria-pressed", x === b));
+    draw(b.dataset.mp);
+  }));
+  draw("2000");
 })();
 
 // Science sub-tabs
