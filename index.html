@@ -530,7 +530,8 @@ form.addEventListener("submit", async (e) => {
   if (!(data.message || "").trim()) { setStatus("Please write a message.", "err"); document.getElementById("c-message").focus(); return; }
   sendBtn.disabled = true; sendBtn.textContent = "Sending…"; setStatus("");
   try {
-    const res = await fetch("/api/contact", { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify(data) });
+    const API = location.hostname.endsWith("coachd.pages.dev") ? "/api/contact" : "https://coachd.pages.dev/api/contact";
+    const res = await fetch(API, { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify(data) });
     const out = await res.json().catch(() => ({}));
     if (!res.ok || !out.ok) throw new Error(out.error || "send failed");
     form.reset();
