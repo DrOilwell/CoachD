@@ -143,6 +143,21 @@ dialog::backdrop { background: rgba(10,15,12,.45); backdrop-filter: blur(3px); }
 .action { background: var(--accent-soft); border-radius: 14px; padding: 14px 16px; font-weight: 700; }
 .close { justify-self: end; border: 1px solid var(--line); background: var(--surface); width: 36px; height: 36px; border-radius: 50%; cursor: pointer; font-size: 1.1rem; line-height: 1; }
 
+/* Contact form */
+.form { gap: 16px; }
+.field { display: grid; gap: 6px; }
+.field label { font-weight: 700; font-size: 0.9rem; }
+.opt { font-weight: 500; color: var(--muted); }
+.field input, .field select, .field textarea { width: 100%; font: inherit; color: var(--fg); background: var(--bg); border: 1px solid var(--line); border-radius: 12px; padding: 12px 14px; }
+.field textarea { resize: vertical; min-height: 140px; }
+.field input:focus, .field select:focus, .field textarea:focus { outline: none; border-color: var(--accent); box-shadow: 0 0 0 3px var(--accent-soft); }
+.hp { position: absolute; left: -9999px; width: 1px; height: 1px; overflow: hidden; }
+.form .btn { justify-self: start; }
+.form .btn[disabled] { opacity: .6; cursor: wait; }
+.form-status { font-weight: 600; font-size: 0.92rem; min-height: 1.4em; }
+.form-status.ok { color: var(--accent); }
+.form-status.err { color: var(--flame); }
+
 footer { border-top: 1px solid var(--line); }
 footer .wrap { padding-block: 24px; display: grid; gap: 6px; font-size: 0.85rem; color: var(--muted); }
 @media (prefers-reduced-motion: reduce) { * { transition: none !important; } }
@@ -166,6 +181,7 @@ footer .wrap { padding-block: 24px; display: grid; gap: 6px; font-size: 0.85rem;
       <button class="tab" role="tab" data-tab="burners" aria-selected="false">Four Burners</button>
       <button class="tab" role="tab" data-tab="science" aria-selected="false">The Science</button>
       <button class="tab" role="tab" data-tab="about" aria-selected="false">About</button>
+      <button class="tab" role="tab" data-tab="contact" aria-selected="false">Contact</button>
     </nav>
   </div>
 </header>
@@ -182,6 +198,7 @@ footer .wrap { padding-block: 24px; display: grid; gap: 6px; font-size: 0.85rem;
       <div class="cta-row">
         <button class="btn primary" data-go="blog">Read the blog</button>
         <button class="btn ghost" data-go="nutrition">See how I eat</button>
+        <button class="btn ghost" data-go="contact">Ask me a question</button>
       </div>
     </div>
 
@@ -308,6 +325,49 @@ footer .wrap { padding-block: 24px; display: grid; gap: 6px; font-size: 0.85rem;
       <p>Now I'm over 40, in the best shape of my life, coaching youth soccer and raising three kids with my wife. I share what works so you can do it too.</p>
     </div>
   </section>
+
+  <!-- CONTACT -->
+  <section class="page" id="contact" role="tabpanel" hidden>
+    <div class="page-head"><h2>Contact</h2><p class="sub">Questions, comments, coaching or collaboration. Send a note and I'll get back to you.</p></div>
+    <div class="two">
+      <form class="card form" id="contact-form" novalidate>
+        <div class="field">
+          <label for="c-name">Name <span class="opt">(optional)</span></label>
+          <input id="c-name" name="name" type="text" maxlength="100" autocomplete="name" placeholder="Your name">
+        </div>
+        <div class="field">
+          <label for="c-email">Email</label>
+          <input id="c-email" name="email" type="email" maxlength="200" autocomplete="email" required placeholder="you@example.com">
+        </div>
+        <div class="field">
+          <label for="c-topic">Topic</label>
+          <select id="c-topic" name="topic">
+            <option>Question</option>
+            <option>Comment</option>
+            <option>Coaching</option>
+            <option>Collaboration</option>
+            <option>Other</option>
+          </select>
+        </div>
+        <div class="field">
+          <label for="c-message">Message</label>
+          <textarea id="c-message" name="message" rows="6" maxlength="4000" required placeholder="What's on your mind?"></textarea>
+        </div>
+        <div class="hp" aria-hidden="true"><label for="c-website">Website</label><input id="c-website" name="website" type="text" tabindex="-1" autocomplete="off"></div>
+        <button class="btn primary" type="submit" id="c-send">Send message</button>
+        <p class="form-status" id="c-status" role="status" aria-live="polite"></p>
+      </form>
+      <div class="card">
+        <h3>Your privacy</h3>
+        <ul class="ticklist">
+          <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12.5l4.5 4.5L19 7.5"/></svg><span>I only use your details to reply to you.</span></li>
+          <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12.5l4.5 4.5L19 7.5"/></svg><span>Your message is stored privately and never shared or sold.</span></li>
+          <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12.5l4.5 4.5L19 7.5"/></svg><span>Want it deleted? Send a note asking, and it's gone.</span></li>
+        </ul>
+        <p class="note">Please don't include medical details. For health concerns, talk to your doctor.</p>
+      </div>
+    </div>
+  </section>
 </main>
 
 <footer>
@@ -324,6 +384,7 @@ footer .wrap { padding-block: 24px; display: grid; gap: 6px; font-size: 0.85rem;
     <span class="read" id="reader-time"></span>
     <div id="reader-body" style="display:grid;gap:12px"></div>
     <p class="action" id="reader-action"></p>
+    <button class="btn ghost" id="reader-ask" style="justify-self:start">Ask Coach D about this</button>
   </div>
 </dialog>
 
@@ -447,6 +508,39 @@ document.getElementById("theme").addEventListener("click", () => {
   paintToggle();
 });
 if (window.matchMedia) matchMedia("(prefers-color-scheme: dark)").addEventListener("change", paintToggle);
+
+document.getElementById("reader-ask").addEventListener("click", () => {
+  const title = document.getElementById("reader-title").textContent;
+  dlg.close();
+  show("contact");
+  document.getElementById("c-topic").value = "Question";
+  const msg = document.getElementById("c-message");
+  if (!msg.value) msg.value = "About \"" + title + "\": ";
+  msg.focus();
+});
+
+const form = document.getElementById("contact-form");
+const statusEl = document.getElementById("c-status");
+const sendBtn = document.getElementById("c-send");
+function setStatus(text, kind) { statusEl.textContent = text; statusEl.className = "form-status" + (kind ? " " + kind : ""); }
+form.addEventListener("submit", async (e) => {
+  e.preventDefault();
+  const data = Object.fromEntries(new FormData(form).entries());
+  if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(data.email || "")) { setStatus("Please enter a valid email so I can reply.", "err"); document.getElementById("c-email").focus(); return; }
+  if (!(data.message || "").trim()) { setStatus("Please write a message.", "err"); document.getElementById("c-message").focus(); return; }
+  sendBtn.disabled = true; sendBtn.textContent = "Sending…"; setStatus("");
+  try {
+    const res = await fetch("/api/contact", { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify(data) });
+    const out = await res.json().catch(() => ({}));
+    if (!res.ok || !out.ok) throw new Error(out.error || "send failed");
+    form.reset();
+    setStatus("Message sent. Thanks for reaching out, I'll get back to you soon.", "ok");
+  } catch (err) {
+    setStatus("Your message couldn't be sent. Check your connection and try again.", "err");
+  } finally {
+    sendBtn.disabled = false; sendBtn.textContent = "Send message";
+  }
+});
 </script>
 
 </body>
