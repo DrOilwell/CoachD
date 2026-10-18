@@ -192,6 +192,29 @@ dialog::backdrop { background: rgba(10,15,12,.45); backdrop-filter: blur(3px); }
 .dc-caption p { color: var(--text2); }
 .sr { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); }
 
+/* Caffeine and NSAID charts */
+.cf-readout { display: flex; align-items: baseline; gap: 10px; flex-wrap: wrap; font-weight: 600; color: var(--text2); }
+.cf-big { font-size: 2.2rem; font-weight: 800; color: var(--fg); font-variant-numeric: tabular-nums; letter-spacing: -0.02em; }
+#cf-times button[aria-pressed="true"] { background: var(--card); color: var(--fg); box-shadow: 0 1px 3px rgba(0,0,0,.12); }
+#cf-svg, #ns-svg { width: 100%; min-width: 520px; height: auto; display: block; }
+#cf-svg text, #ns-svg text { fill: var(--muted); font-family: var(--font); font-size: 12px; }
+#cf-svg .grid-line, #ns-svg .grid-line { stroke: var(--line); stroke-width: 1; }
+#cf-svg .half { stroke: var(--muted); stroke-dasharray: 5 5; }
+#cf-svg .bed { stroke: var(--c-ghrelin); stroke-width: 2; }
+#cf-svg .bed-label { fill: var(--c-ghrelin); font-weight: 700; }
+#cf-svg .area { fill: var(--accent-soft); }
+#cf-svg .line { fill: none; stroke: var(--accent); stroke-width: 3; stroke-linejoin: round; }
+#cf-svg .pt { fill: var(--accent); stroke: var(--card); stroke-width: 2; }
+#cf-svg .pt-label { fill: var(--fg); font-weight: 800; font-size: 13px; }
+#ns-svg .bar { fill: var(--flame); }
+#ns-svg .bar.base { fill: var(--muted); }
+#ns-svg .ci { stroke: var(--fg); stroke-width: 1.5; }
+#ns-svg .name { fill: var(--fg); font-weight: 700; font-size: 13px; }
+#ns-svg .val { fill: var(--fg); font-weight: 800; font-size: 13px; }
+#ns-svg .ref { stroke: var(--fg); stroke-width: 1.5; }
+.sources { display: grid; gap: 6px; font-size: 0.92rem; }
+.sources strong { font-size: 0.8rem; text-transform: uppercase; letter-spacing: 0.08em; color: var(--muted); }
+
 /* Contact form */
 .form { gap: 16px; }
 .field { display: grid; gap: 6px; }
@@ -402,6 +425,8 @@ footer .wrap { padding-block: 24px; display: grid; gap: 6px; font-size: 0.85rem;
       <button type="button" role="tab" data-sub="fasting" aria-selected="true">Fasting</button>
       <button type="button" role="tab" data-sub="digest" aria-selected="false">After you eat</button>
       <button type="button" role="tab" data-sub="first" aria-selected="false">First meal</button>
+      <button type="button" role="tab" data-sub="caffeine" aria-selected="false">Caffeine &amp; more</button>
+      <button type="button" role="tab" data-sub="pain" aria-selected="false">Pain relievers</button>
       <button type="button" role="tab" data-sub="research" aria-selected="false">Research</button>
     </div>
 
@@ -481,6 +506,97 @@ footer .wrap { padding-block: 24px; display: grid; gap: 6px; font-size: 0.85rem;
         <p>Eggs, Greek yogurt, oats, berries, nuts, avocado. They digest slowly, so blood sugar rises gently and you stay full and focused for hours.</p>
       </div>
     </div>
+    </div>
+
+    <div class="block" data-pane="caffeine" hidden>
+      <h3 class="pane-title">Caffeine, nicotine and alcohol</h3>
+      <p class="sub">All three change how you sleep and recover. Caffeine is the sneaky one, because it stays in your body much longer than the buzz lasts.</p>
+
+      <div class="card daychart">
+        <h3>How long your coffee stays with you</h3>
+        <p>Caffeine has a half-life of about 5 hours: every 5 hours, about half of what's left is gone. Pick when you have a cup and see what's still in your body at a 10&nbsp;PM bedtime.</p>
+        <div class="segmented" role="group" aria-label="When you have coffee" id="cf-times">
+          <button type="button" data-h="7" aria-pressed="true">7 AM</button>
+          <button type="button" data-h="12" aria-pressed="false">Noon</button>
+          <button type="button" data-h="15" aria-pressed="false">3 PM</button>
+          <button type="button" data-h="18" aria-pressed="false">6 PM</button>
+        </div>
+        <div class="dc-wrap"><svg id="cf-svg" viewBox="0 0 760 300" role="img" aria-label="Line chart of caffeine remaining in the body over the day, halving every 5 hours."></svg></div>
+        <div class="cf-readout"><span class="cf-big" id="cf-pct">13%</span><span id="cf-text">still in your body at 10 PM bedtime.</span></div>
+        <p class="muted small">Simplified: assumes about 5 hours and full absorption within the hour. Real half-life ranges widely. Smoking shortens it; pregnancy can stretch it to about 15 hours.</p>
+      </div>
+
+      <div class="grid">
+        <div class="card">
+          <span class="label">Caffeine</span>
+          <h3>Late coffee steals sleep you don't notice</h3>
+          <p>In a sleep-lab study, caffeine taken 6 hours before bed cut sleep by more than an hour, yet people didn't feel they had slept worse. A 2023 review of 24 studies found caffeine cut about 45 minutes of sleep and recommended finishing a regular coffee at least 8.8 hours before bed.</p>
+          <p><strong>My rule:</strong> coffee in the morning only. With a 10 PM bedtime, my last cup is before 1 PM.</p>
+          <span class="cite">Drake et al., J Clin Sleep Med, 2013 · Gardiner et al., Sleep Med Rev, 2023</span>
+        </div>
+        <div class="card">
+          <span class="label">Nicotine</span>
+          <h3>The worst one before bed</h3>
+          <p>Nicotine is a stimulant with a half-life of about 2 hours. In a study that tracked 785 adults over 5,164 nights, nicotine within 4 hours of bed was the substance most strongly linked to broken sleep. People with insomnia lost about 43 minutes a night.</p>
+          <span class="cite">Spadola et al., Sleep, 2019 · Benowitz et al., J Pharmacol Exp Ther, 1982</span>
+        </div>
+        <div class="card">
+          <span class="label">Alcohol</span>
+          <h3>Helps you fall asleep, then wrecks the night</h3>
+          <p>Alcohol knocks you out faster, but it delays and cuts REM sleep, the stage tied to memory and mood, and the second half of the night gets restless. The same 785-adult study linked evening drinks to more broken sleep. That's a big reason I quit.</p>
+          <span class="cite">Ebrahim et al., Alcohol Clin Exp Res, 2013 · Spadola et al., Sleep, 2019</span>
+        </div>
+      </div>
+      <p class="note">One twist: in the 785-adult study, caffeine within 4 hours of bed wasn't linked to worse sleep, even though lab studies show it is. People react differently. If you sleep badly, cut the afternoon coffee first and see.</p>
+      <div class="sources">
+        <strong>Studies</strong>
+        <a href="https://aasm.org/late-afternoon-and-early-evening-caffeine-can-disrupt-sleep-at-night/" target="_blank" rel="noopener">Caffeine 0, 3 or 6 hours before bed (Drake, 2013)</a>
+        <a href="https://www.ajmc.com/view/caffeine-and-sleep-review-suggests-consumption-guidelines" target="_blank" rel="noopener">Caffeine and sleep meta-analysis (Gardiner, 2023)</a>
+        <a href="https://www.ncbi.nlm.nih.gov/books/NBK519490/" target="_blank" rel="noopener">Caffeine half-life (StatPearls)</a>
+        <a href="https://www.fau.edu/newsdesk/articles/sleep-interrupted.php" target="_blank" rel="noopener">Evening alcohol, caffeine and nicotine (Spadola, 2019)</a>
+        <a href="https://bionumbers.hms.harvard.edu/bionumber.aspx?id=106683" target="_blank" rel="noopener">Nicotine half-life (Benowitz, 1982)</a>
+        <a href="https://sleepreviewmag.com/sleep-disorders/breathing-disorders/snoring/researchers-consolidate-all-available-literature-on-effects-of-alcohol-on-sleep/" target="_blank" rel="noopener">Alcohol and sleep review (Ebrahim, 2013)</a>
+      </div>
+    </div>
+
+    <div class="block" data-pane="pain" hidden>
+      <h3 class="pane-title">Taking pain relievers every day</h3>
+      <p class="sub">Over-the-counter pain relievers are safe when used as directed for short stretches. Taking them daily, "just in case," puts real strain on your heart, stomach, kidneys and liver.</p>
+
+      <div class="card daychart">
+        <h3>Heart-attack risk with common NSAIDs</h3>
+        <p>A study of 446,763 people found every common NSAID raised the odds of a heart attack, even within the first week of use. The risk was highest in the first month and at higher doses.</p>
+        <div class="dc-wrap"><svg id="ns-svg" viewBox="0 0 760 300" role="img" aria-label="Bar chart of heart attack odds ratios for 1 to 7 days of use: celecoxib 1.24, ibuprofen 1.48, diclofenac 1.50, naproxen 1.53, compared with 1.00 for no NSAID."></svg></div>
+        <p class="muted small">Odds of a heart attack compared with not taking an NSAID (1.0). 1.5 means about 50% higher odds. Lines show the study's range of likely values. Bally et al., BMJ, 2017.</p>
+      </div>
+
+      <div class="grid">
+        <div class="card">
+          <span class="label">NSAIDs · ibuprofen, naproxen</span>
+          <h3>Stomach, kidneys and blood pressure</h3>
+          <p>They block chemicals that cause pain, but those same chemicals protect your stomach lining and keep blood flowing to your kidneys. Daily use raises the risk of ulcers and bleeding, strains the kidneys and can raise blood pressure.</p>
+          <span class="cite">Bally et al., BMJ, 2017 · FDA drug label warnings</span>
+        </div>
+        <div class="card">
+          <span class="label">Acetaminophen · Tylenol</span>
+          <h3>Easy on the stomach, hard on the liver</h3>
+          <p>It's the number one cause of acute liver failure in the U.S., behind about 46% of cases, often from doubling up without knowing it, since it's hidden in many cold and flu products. Never go over the label's daily limit, and skip alcohol when taking it.</p>
+          <span class="cite">Acute Liver Failure Study Group, UT Southwestern</span>
+        </div>
+        <div class="card">
+          <span class="label">Rebound headaches</span>
+          <h3>The pills that cause the pain</h3>
+          <p>Taking simple pain relievers on 15 or more days a month (10 or more for combination pills, triptans or opioids) can cause "medication-overuse headache," daily headaches driven by the medicine itself. It affects about 1 in 100 people worldwide.</p>
+          <span class="cite">ICHD-3 criteria · StatPearls, Medication Overuse Headache</span>
+        </div>
+      </div>
+      <p class="note">This isn't medical advice. If you're reaching for pain relievers most days, talk to your doctor. Daily pain usually has a cause worth finding, and there are safer long-term options.</p>
+      <div class="sources">
+        <strong>Studies</strong>
+        <a href="https://www.bmj.com/node/943431" target="_blank" rel="noopener">NSAIDs and heart attack risk (Bally, BMJ, 2017)</a>
+        <a href="https://utsouthwestern.edu/newsroom/articles/year-2018/acute-liver-failure-cause.html" target="_blank" rel="noopener">Acetaminophen and acute liver failure (UT Southwestern)</a>
+        <a href="https://www.ncbi.nlm.nih.gov/sites/books/NBK470171/" target="_blank" rel="noopener">Medication overuse headache (StatPearls)</a>
+      </div>
     </div>
 
     <div class="block" data-pane="research" hidden>
@@ -995,6 +1111,74 @@ renderMember();
     play.textContent = "Pause"; last = 0; raf = requestAnimationFrame(tick);
   });
   setTime(6.5);
+})();
+
+// Caffeine half-life chart
+(function () {
+  const svg = document.getElementById("cf-svg");
+  if (!svg) return;
+  const NS = "http://www.w3.org/2000/svg", HALF = 5, BED = 22;
+  const X0 = 50, X1 = 744, Y0 = 20, Y1 = 256, T0 = 6, T1 = 24;
+  const xs = h => X0 + ((h - T0) / (T1 - T0)) * (X1 - X0);
+  const ys = v => Y1 - (v / 100) * (Y1 - Y0);
+  const el = (tag, a) => { const e = document.createElementNS(NS, tag); for (const k in a) e.setAttribute(k, a[k]); svg.appendChild(e); return e; };
+  const lab = h => (h % 12 === 0 ? 12 : h % 12) + (h < 12 || h === 24 ? "a" : "p");
+  for (let h = 6; h <= 24; h += 3) { el("line", { class: "grid-line", x1: xs(h), x2: xs(h), y1: Y0, y2: Y1 }); const t = el("text", { x: xs(h), y: Y1 + 20, "text-anchor": "middle" }); t.textContent = lab(h); }
+  [0, 25, 50, 75, 100].forEach(v => { el("line", { class: "grid-line", x1: X0, x2: X1, y1: ys(v), y2: ys(v) }); const t = el("text", { x: X0 - 8, y: ys(v) + 4, "text-anchor": "end" }); t.textContent = v + "%"; });
+  el("line", { class: "half", x1: X0, x2: X1, y1: ys(50), y2: ys(50) });
+  const area = el("path", { class: "area" });
+  const line = el("path", { class: "line" });
+  el("line", { class: "bed", x1: xs(BED), x2: xs(BED), y1: Y0, y2: Y1 });
+  const bl = el("text", { class: "bed-label", x: xs(BED) - 6, y: Y0 + 14, "text-anchor": "end" }); bl.textContent = "Bedtime";
+  const halfPt = el("circle", { class: "pt", r: 5 });
+  const halfLab = el("text", { class: "pt-label", "text-anchor": "middle" });
+  const bedPt = el("circle", { class: "pt", r: 6 });
+  const bedLab = el("text", { class: "pt-label", "text-anchor": "end" });
+  const pct = document.getElementById("cf-pct"), txt = document.getElementById("cf-text");
+  function draw(start) {
+    let d = "M" + xs(start) + "," + ys(0);
+    for (let h = start; h <= T1 + 0.001; h += 0.1) d += "L" + xs(h).toFixed(1) + "," + ys(100 * Math.pow(0.5, (h - start) / HALF)).toFixed(1);
+    line.setAttribute("d", d);
+    area.setAttribute("d", d + "L" + xs(T1) + "," + ys(0) + "Z");
+    const hh = start + HALF; halfPt.setAttribute("cx", xs(hh)); halfPt.setAttribute("cy", ys(50));
+    halfLab.setAttribute("x", xs(hh)); halfLab.setAttribute("y", ys(50) - 12); halfLab.textContent = "Half left at " + lab(hh).replace("a", " AM").replace("p", " PM");
+    const left = 100 * Math.pow(0.5, (BED - start) / HALF);
+    bedPt.setAttribute("cx", xs(BED)); bedPt.setAttribute("cy", ys(left));
+    bedLab.setAttribute("x", xs(BED) - 10); bedLab.setAttribute("y", ys(left) - 10); bedLab.textContent = Math.round(left) + "%";
+    pct.textContent = Math.round(left) + "%";
+    txt.textContent = left >= 25 ? "still in your body at 10 PM bedtime. That's like going to bed after part of a cup of coffee." : "still in your body at 10 PM bedtime.";
+  }
+  document.querySelectorAll("#cf-times [data-h]").forEach(b => b.addEventListener("click", () => {
+    document.querySelectorAll("#cf-times [data-h]").forEach(x => x.setAttribute("aria-pressed", x === b));
+    draw(parseFloat(b.dataset.h));
+  }));
+  draw(7);
+})();
+
+// NSAID heart-attack odds chart (Bally et al., BMJ 2017; 1-7 days of use)
+(function () {
+  const svg = document.getElementById("ns-svg");
+  if (!svg) return;
+  const NS = "http://www.w3.org/2000/svg";
+  const rows = [["No NSAID", 1.0, null, null], ["Celecoxib", 1.24, 0.91, 1.82], ["Ibuprofen", 1.48, 1.0, 2.26], ["Diclofenac", 1.5, 1.06, 2.04], ["Naproxen", 1.53, 1.07, 2.33]];
+  const X0 = 130, X1 = 720, V0 = 0, V1 = 2.5, top = 16, rowH = 50;
+  const xs = v => X0 + ((v - V0) / (V1 - V0)) * (X1 - X0);
+  const el = (tag, a) => { const e = document.createElementNS(NS, tag); for (const k in a) e.setAttribute(k, a[k]); svg.appendChild(e); return e; };
+  const bottom = top + rows.length * rowH;
+  [0, 0.5, 1, 1.5, 2, 2.5].forEach(v => { el("line", { class: "grid-line", x1: xs(v), x2: xs(v), y1: top, y2: bottom }); const t = el("text", { x: xs(v), y: bottom + 20, "text-anchor": "middle" }); t.textContent = v.toFixed(1); });
+  rows.forEach(([name, or, lo, hi], i) => {
+    const cy = top + i * rowH + rowH / 2;
+    const n = el("text", { class: "name", x: X0 - 12, y: cy + 4, "text-anchor": "end" }); n.textContent = name;
+    el("rect", { class: "bar" + (i === 0 ? " base" : ""), x: xs(0), y: cy - 11, width: xs(or) - xs(0), height: 22, rx: 5 });
+    if (lo != null) {
+      el("line", { class: "ci", x1: xs(lo), x2: xs(hi), y1: cy, y2: cy });
+      el("line", { class: "ci", x1: xs(lo), x2: xs(lo), y1: cy - 6, y2: cy + 6 });
+      el("line", { class: "ci", x1: xs(hi), x2: xs(hi), y1: cy - 6, y2: cy + 6 });
+    }
+    const v = el("text", { class: "val", x: (hi != null ? xs(hi) : xs(or)) + 10, y: cy + 4 }); v.textContent = or.toFixed(2);
+  });
+  el("line", { class: "ref", x1: xs(1), x2: xs(1), y1: top - 4, y2: bottom });
+  const r = el("text", { x: xs(1) + 6, y: top + 2 }); r.textContent = "";
 })();
 
 // Science sub-tabs
