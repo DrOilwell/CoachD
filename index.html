@@ -70,6 +70,10 @@ button { font: inherit; color: inherit; }
 .yt { display: inline-flex; align-items: center; gap: 8px; text-decoration: none; background: var(--fg); color: var(--bg); padding: 8px 14px; border-radius: 999px; font-weight: 700; font-size: 0.88rem; white-space: nowrap; }
 .yt svg { width: 16px; height: 16px; }
 .bar-actions { display: flex; align-items: center; gap: 8px; }
+.pill-stack { display: flex; flex-direction: column; align-items: stretch; gap: 4px; }
+.join-pill { border: 0; cursor: pointer; background: var(--accent); color: #fff; font-weight: 800; font-size: 0.75rem; line-height: 1; padding: 5px 10px; border-radius: 999px; white-space: nowrap; }
+.join-pill:hover { filter: brightness(1.08); }
+.bmc { justify-content: center; }
 .bmc { display: inline-flex; align-items: center; gap: 5px; background: #ffdd00; color: #0d0c22; text-decoration: none; font-weight: 700; font-size: 0.75rem; padding: 4px 10px 4px 7px; border-radius: 999px; white-space: nowrap; line-height: 1; }
 .bmc svg { width: 15px; height: 15px; }
 .bmc:hover { filter: brightness(0.95); }
@@ -294,7 +298,8 @@ dialog::backdrop { background: rgba(10,15,12,.45); backdrop-filter: blur(3px); }
   main { padding-block: 20px 48px; }
   .page { gap: 28px; }
   .topbar .bar { padding-block: 10px; }
-  .brand-text strong { font-size: 1.2rem; white-space: nowrap; }
+  .brand-text strong { font-size: 1.1rem; white-space: nowrap; }
+  .join-pill { font-size: 0.68rem; padding: 4px 8px; }
   .brand { min-width: 0; }
   .brand-text small { font-size: 0.75rem; }
   .bar-actions { gap: 6px; }
@@ -374,22 +379,24 @@ footer .wrap { padding-block: 24px; display: grid; gap: 6px; font-size: 0.85rem;
     <div class="bar">
       <div class="brand"><span class="brand-text"><strong>Nutri Active <span class="w">Wellness</span></strong><small>Coach E</small></span></div>
       <div class="bar-actions">
-      <a class="bmc" href="https://buymeacoffee.com/oilwell" target="_blank" rel="noopener" aria-label="Buy me a coffee (opens Buy Me a Coffee)"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 8h11v5.5A4.5 4.5 0 0 1 11.5 18h-2A4.5 4.5 0 0 1 5 13.5V8z" fill="currentColor"/><path d="M16 9.5h1.5a2.25 2.25 0 0 1 0 4.5H16" fill="none" stroke="currentColor" stroke-width="1.8"/><path d="M8 3.5c0 1 .8 1.3.8 2.3M11 3.5c0 1 .8 1.3.8 2.3" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"/><path d="M4 20h13" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg><span>Buy me a coffee</span></a>
+      <div class="pill-stack">
+        <a class="bmc" href="https://buymeacoffee.com/oilwell" target="_blank" rel="noopener" aria-label="Buy me a coffee (opens Buy Me a Coffee)"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 8h11v5.5A4.5 4.5 0 0 1 11.5 18h-2A4.5 4.5 0 0 1 5 13.5V8z" fill="currentColor"/><path d="M16 9.5h1.5a2.25 2.25 0 0 1 0 4.5H16" fill="none" stroke="currentColor" stroke-width="1.8"/><path d="M8 3.5c0 1 .8 1.3.8 2.3M11 3.5c0 1 .8 1.3.8 2.3" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"/><path d="M4 20h13" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg><span>Buy me a coffee</span></a>
+        <button class="join-pill" id="join-pill" type="button" data-go="join">Join free</button>
+      </div>
       <button class="theme-btn" id="theme" aria-label="Switch to light mode"><span id="theme-icon" aria-hidden="true"></span><span id="theme-text">Light</span></button>
       <button class="menu-btn" id="menu-btn" type="button" aria-expanded="false" aria-controls="tabs-nav" aria-label="Open menu"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" aria-hidden="true"><path class="m1" d="M4 7h16"/><path class="m2" d="M4 12h16"/><path class="m3" d="M4 17h16"/></svg><span id="menu-label" class="sr">Menu</span></button>
       </div>
     </div>
     <nav class="tabs" id="tabs-nav" role="tablist" aria-label="Sections">
       <button class="tab" role="tab" data-tab="home" aria-selected="true">Home</button>
+      <button class="tab" role="tab" data-tab="nutrition" aria-selected="false">Nutrition</button>
       <button class="tab" role="tab" data-tab="science" aria-selected="false">The Science</button>
-      <button class="tab" role="tab" data-tab="join" aria-selected="false" id="join-tab">Join free</button>
+      <button class="tab" role="tab" data-tab="blog" aria-selected="false">Blog</button>
       <div class="more" id="more">
         <button class="more-btn" id="more-btn" type="button" aria-haspopup="true" aria-expanded="false"><span id="more-label">More</span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M6 9l6 6 6-6"/></svg></button>
         <div class="more-menu" role="group" aria-label="More pages">
-          <button class="tab" role="tab" data-tab="nutrition" aria-selected="false">Nutrition</button>
           <button class="tab" role="tab" data-tab="burners" aria-selected="false">Four Burners</button>
           <button class="tab" role="tab" data-tab="about" aria-selected="false">About</button>
-          <button class="tab" role="tab" data-tab="blog" aria-selected="false">Blog</button>
           <button class="tab" role="tab" data-tab="contact" aria-selected="false">Contact</button>
         </div>
       </div>
@@ -1248,7 +1255,7 @@ function renderMember() {
   document.getElementById("member-in").hidden = !m;
   document.getElementById("join-form").hidden = !!m;
   if (m) document.getElementById("member-hello").textContent = "You're in, " + m.name + ".";
-  document.getElementById("join-tab").textContent = m ? "Member" : "Join free";
+  document.getElementById("join-pill").textContent = m ? "Member" : "Join free";
   document.querySelectorAll("[data-join-cta]").forEach(b => b.hidden = !!m);
   const as = document.getElementById("cm-as");
   as.hidden = !m;
