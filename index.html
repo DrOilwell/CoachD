@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-<meta name="description" content="Coach D: Nutri Active Wellness. Over 40, fit, and still showing up for everyone.">
+<meta name="description" content="Coach E: Nutri Active Wellness. Over 40, fit, and still showing up for everyone.">
 <style>[hidden]{display:none!important} body{margin:0} img{max-width:100%}</style>
 <title>Keep All Four Lit</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -158,6 +158,24 @@ dialog::backdrop { background: rgba(10,15,12,.45); backdrop-filter: blur(3px); }
 .form-status.ok { color: var(--accent); }
 .form-status.err { color: var(--flame); }
 
+/* Comments */
+.comments { display: grid; gap: 14px; border-top: 1px solid var(--line); padding-top: 18px; margin-top: 6px; }
+.comments h3 { font-size: 1.2rem; font-weight: 800; }
+.cm-list { display: grid; gap: 10px; }
+.cm { background: var(--surface); border-radius: 14px; padding: 12px 14px; display: grid; gap: 4px; }
+.cm-head { display: flex; gap: 8px; align-items: baseline; flex-wrap: wrap; }
+.cm-head strong { font-size: 0.95rem; }
+.cm-head span { font-size: 0.8rem; color: var(--muted); }
+.cm p { font-size: 0.96rem; white-space: pre-wrap; overflow-wrap: anywhere; }
+.muted { color: var(--muted); }
+.small { font-size: 0.82rem; }
+
+/* About sign-off and support */
+.signoff { font-weight: 700; }
+.signoff span { color: var(--accent); }
+.coffee { max-width: 42em; background: var(--flame-soft); border-color: transparent; }
+.coffee-btn { justify-self: start; background: var(--flame); color: #fff; }
+
 footer { border-top: 1px solid var(--line); }
 footer .wrap { padding-block: 24px; display: grid; gap: 6px; font-size: 0.85rem; color: var(--muted); }
 @media (prefers-reduced-motion: reduce) { * { transition: none !important; } }
@@ -168,7 +186,7 @@ footer .wrap { padding-block: 24px; display: grid; gap: 6px; font-size: 0.85rem;
 <header class="topbar">
   <div class="wrap">
     <div class="bar">
-      <div class="brand"><span class="logo" aria-hidden="true"><i></i><i></i><i></i><i></i></span>Coach D</div>
+      <div class="brand"><span class="logo" aria-hidden="true"><i></i><i></i><i></i><i></i></span>Coach E</div>
       <div class="bar-actions">
       <button class="theme-btn" id="theme" aria-label="Switch to light mode"><span id="theme-icon" aria-hidden="true"></span><span id="theme-text">Light</span></button>
       </div>
@@ -193,7 +211,7 @@ footer .wrap { padding-block: 24px; display: grid; gap: 6px; font-size: 0.85rem;
     <div class="hero">
       <span class="label">Nutri Active Wellness</span>
       <h1>Over 40, fit, and <span>still showing up</span> for everyone.</h1>
-      <p class="sub">I'm Coach D: active-duty soldier, soccer coach and father of three. I walk 5 miles a day, eat clean in a 16/8 window, and keep all four burners lit: family, friends, health and work.</p>
+      <p class="sub">I'm Coach E: active-duty soldier, soccer coach and father of three. I walk 5 miles a day, eat clean in a 16/8 window, and keep all four burners lit: family, friends, health and work.</p>
       <div class="chips"><span class="chip">Active-duty Army</span><span class="chip">Soccer coach</span><span class="chip">Dad of 3</span><span class="chip">16/8 fasting</span><span class="chip">5 miles a day</span><span class="chip">No alcohol</span></div>
       <div class="cta-row">
         <button class="btn primary" data-go="blog">Read the blog</button>
@@ -316,13 +334,19 @@ footer .wrap { padding-block: 24px; display: grid; gap: 6px; font-size: 0.85rem;
 
   <!-- ABOUT -->
   <section class="page" id="about" role="tabpanel" hidden>
-    <div class="page-head"><h2>About Coach D</h2></div>
+    <div class="page-head"><span class="label">About me</span><h2>Hi, I'm Coach E.</h2></div>
     <div class="prose">
-      <p>I spent a big part of my childhood on three different continents. In the inner cities of most of the countries I lived in, I learned soccer, or fútbol, on the streets and local pitches. The game taught me teamwork, grit and how to connect with people anywhere.</p>
-      <p>I joined the Army at 23 and have served for more than 20 years. As a leader, I've spent much of that career leading thousands of soldiers. I'm still on active duty today.</p>
-      <p>Along the way I earned a master's in Applied Physiology and Kinesiology at the University of Florida, so the science behind performance and health is something I study as much as I live.</p>
-      <p>In my early 40s I'd let it all slide: heavier, prediabetic, a drink every night to unwind. I didn't want my kids to remember that version of me. So I started walking, stopped drinking, and rebuilt how I eat.</p>
-      <p>Now I'm over 40, in the best shape of my life, coaching youth soccer and raising three kids with my wife. I share what works so you can do it too.</p>
+      <p>I grew up on three continents, and in the inner cities of most of the countries I lived in, I learned fútbol on the streets and local pitches. The game taught me teamwork, grit, and how to connect with people anywhere.</p>
+      <p>At 23, I joined the Army. More than 20 years later, I'm still on active duty, and that time has shaped me as much as the game did. Leading thousands of soldiers taught me how to talk to anyone, earn trust, and bring out the best in people. I learned that the best leaders are mentors and coaches first, and that a team only wins when everyone on it does.</p>
+      <p>Along the way, I earned a master's in Applied Physiology and Kinesiology from the University of Florida. I don't just live the science of performance and health. I've studied it.</p>
+      <p>But by my early 40s, I'd let it slide. I was heavier, prediabetic, and having a drink every night to unwind. I didn't want my kids to remember that version of me. So I started walking, quit drinking, and rebuilt the way I eat.</p>
+      <p>Today, I'm in the best shape of my life. I coach youth soccer and raise three kids with my wife. And I share what works so you can do it too.</p>
+      <p class="signoff">Let's get to work.<br><span>— Coach E</span></p>
+    </div>
+    <div class="card coffee" data-coffee hidden>
+      <h3>Support the work</h3>
+      <p>If something here helped you, you can buy me a coffee. It keeps the free posts coming.</p>
+      <a class="btn coffee-btn" data-coffee-link href="#" target="_blank" rel="noopener">Buy me a coffee</a>
     </div>
   </section>
 
@@ -384,11 +408,34 @@ footer .wrap { padding-block: 24px; display: grid; gap: 6px; font-size: 0.85rem;
     <span class="read" id="reader-time"></span>
     <div id="reader-body" style="display:grid;gap:12px"></div>
     <p class="action" id="reader-action"></p>
-    <button class="btn ghost" id="reader-ask" style="justify-self:start">Ask Coach D about this</button>
+    <button class="btn ghost" id="reader-ask" style="justify-self:start">Ask Coach E about this</button>
+    <div class="comments">
+      <h3>Comments</h3>
+      <div id="cm-list" class="cm-list"><p class="muted">Loading comments…</p></div>
+      <form id="cm-form" class="form" novalidate>
+        <div class="field">
+          <label for="cm-name">Name</label>
+          <input id="cm-name" name="name" type="text" maxlength="60" required placeholder="First name is fine">
+        </div>
+        <div class="field">
+          <label for="cm-text">Comment</label>
+          <textarea id="cm-text" name="comment" rows="3" maxlength="1500" required placeholder="Share your thoughts or a question"></textarea>
+        </div>
+        <div class="hp" aria-hidden="true"><label for="cm-website">Website</label><input id="cm-website" name="website" type="text" tabindex="-1" autocomplete="off"></div>
+        <button class="btn primary" type="submit" id="cm-send">Post comment</button>
+        <p class="form-status" id="cm-status" role="status" aria-live="polite"></p>
+        <p class="muted small">Comments appear after a quick review. Please be kind and keep medical details private.</p>
+      </form>
+    </div>
   </div>
 </dialog>
 
 <script>
+// Settings
+const COFFEE_URL = ""; // e.g. "https://buymeacoffee.com/yourname" — the support box stays hidden until this is set
+function apiBase() { return location.hostname.endsWith("coachd.pages.dev") ? "" : "https://coachd.pages.dev"; }
+let currentPostId = null;
+
 const POSTS = [
   { id: "breakfast", tag: "Nutrition", cls: "nutrition", min: 4, title: "Why I skip breakfast, and what the research really says",
     teaser: "16/8 isn't magic. Here's why it works for me.",
@@ -466,6 +513,8 @@ function openPost(p) {
   body.innerHTML = "";
   p.body.forEach(t => { const el = document.createElement("p"); el.textContent = t; body.appendChild(el); });
   document.getElementById("reader-action").textContent = p.action;
+  currentPostId = p.id;
+  loadComments(p.id);
   if (dlg.showModal) dlg.showModal(); else dlg.setAttribute("open", "");
 }
 document.getElementById("close").addEventListener("click", () => dlg.close());
@@ -530,8 +579,7 @@ form.addEventListener("submit", async (e) => {
   if (!(data.message || "").trim()) { setStatus("Please write a message.", "err"); document.getElementById("c-message").focus(); return; }
   sendBtn.disabled = true; sendBtn.textContent = "Sending…"; setStatus("");
   try {
-    const API = location.hostname.endsWith("coachd.pages.dev") ? "/api/contact" : "https://coachd.pages.dev/api/contact";
-    const res = await fetch(API, { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify(data) });
+    const res = await fetch(apiBase() + "/api/contact", { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify(data) });
     const out = await res.json().catch(() => ({}));
     if (!res.ok || !out.ok) throw new Error(out.error || "send failed");
     form.reset();
@@ -542,6 +590,70 @@ form.addEventListener("submit", async (e) => {
     sendBtn.disabled = false; sendBtn.textContent = "Send message";
   }
 });
+
+// Comments
+const cmList = document.getElementById("cm-list");
+const cmForm = document.getElementById("cm-form");
+const cmStatus = document.getElementById("cm-status");
+const cmSend = document.getElementById("cm-send");
+function fmtDate(s) {
+  const d = new Date(String(s).replace(" ", "T") + "Z");
+  return isNaN(d) ? "" : d.toLocaleDateString(undefined, { month: "short", day: "numeric", year: "numeric" });
+}
+async function loadComments(postId) {
+  cmList.innerHTML = '<p class="muted">Loading comments…</p>';
+  cmStatus.textContent = ""; cmStatus.className = "form-status";
+  try {
+    const res = await fetch(apiBase() + "/api/comments?post=" + encodeURIComponent(postId));
+    const out = await res.json();
+    if (postId !== currentPostId) return;
+    const items = out.comments || [];
+    cmList.innerHTML = "";
+    if (!items.length) { cmList.innerHTML = '<p class="muted">No comments yet. Be the first.</p>'; return; }
+    items.forEach(c => {
+      const el = document.createElement("div"); el.className = "cm";
+      const head = document.createElement("div"); head.className = "cm-head";
+      const n = document.createElement("strong"); n.textContent = c.name;
+      const t = document.createElement("span"); t.textContent = fmtDate(c.created_at);
+      head.append(n, t);
+      const body = document.createElement("p"); body.textContent = c.comment;
+      el.append(head, body);
+      if (c.reply) {
+        const r = document.createElement("p"); r.className = "muted"; r.textContent = "Coach E: " + c.reply;
+        el.append(r);
+      }
+      cmList.appendChild(el);
+    });
+  } catch (e) {
+    if (postId === currentPostId) cmList.innerHTML = '<p class="muted">Comments couldn\'t load right now.</p>';
+  }
+}
+cmForm.addEventListener("submit", async (e) => {
+  e.preventDefault();
+  const data = Object.fromEntries(new FormData(cmForm).entries());
+  data.post = currentPostId;
+  const setS = (t, k) => { cmStatus.textContent = t; cmStatus.className = "form-status" + (k ? " " + k : ""); };
+  if (!(data.name || "").trim()) { setS("Please add your name.", "err"); return; }
+  if (!(data.comment || "").trim()) { setS("Please write a comment.", "err"); return; }
+  cmSend.disabled = true; cmSend.textContent = "Posting…"; setS("");
+  try {
+    const res = await fetch(apiBase() + "/api/comments", { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify(data) });
+    const out = await res.json().catch(() => ({}));
+    if (!res.ok || !out.ok) throw new Error(out.error || "failed");
+    cmForm.reset();
+    setS("Thanks! Your comment will appear after a quick review.", "ok");
+  } catch (err) {
+    setS("Your comment couldn't be posted. Try again in a moment.", "err");
+  } finally {
+    cmSend.disabled = false; cmSend.textContent = "Post comment";
+  }
+});
+
+// Buy me a coffee
+if (COFFEE_URL) {
+  document.querySelectorAll("[data-coffee]").forEach(el => el.hidden = false);
+  document.querySelectorAll("[data-coffee-link]").forEach(a => a.href = COFFEE_URL);
+}
 </script>
 
 </body>
