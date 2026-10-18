@@ -22,6 +22,11 @@
   --accent-soft: #e4f2ec;
   --flame: #e46a26;
   --flame-soft: #fdeee4;
+  --c-cortisol: #d9622b;
+  --c-ghrelin: #8a55c9;
+  --c-sugar: #2f74c8;
+  --c-insulin: #17785a;
+  --window: rgba(23,120,90,.08);
   --shadow: 0 1px 2px rgba(20,30,25,.06), 0 6px 20px rgba(20,30,25,.07);
   --font: "Plus Jakarta Sans", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
   --r: 18px;
@@ -29,13 +34,13 @@
 @media (prefers-color-scheme: dark) {
   :root:not([data-theme="light"]) {
     --bg: #111513; --surface: #181d1a; --card: #1c221f; --fg: #edf1ee; --muted: #9ba49e; --text2: #c7cfca; --line: #2a322e;
-    --accent: #4cc493; --accent-soft: #1b3229; --flame: #f2894c; --flame-soft: #3a2519;
+    --accent: #4cc493; --accent-soft: #1b3229; --flame: #f2894c; --flame-soft: #3a2519; --c-cortisol: #f2894c; --c-ghrelin: #b48cf0; --c-sugar: #6aa8f0; --c-insulin: #4cc493; --window: rgba(76,196,147,.10);
     --shadow: 0 1px 2px rgba(0,0,0,.4), 0 6px 20px rgba(0,0,0,.35); color-scheme: dark;
   }
 }
 :root[data-theme="dark"] {
   --bg: #111513; --surface: #181d1a; --card: #1c221f; --fg: #edf1ee; --muted: #9ba49e; --text2: #c7cfca; --line: #2a322e;
-  --accent: #4cc493; --accent-soft: #1b3229; --flame: #f2894c; --flame-soft: #3a2519;
+  --accent: #4cc493; --accent-soft: #1b3229; --flame: #f2894c; --flame-soft: #3a2519; --c-cortisol: #f2894c; --c-ghrelin: #b48cf0; --c-sugar: #6aa8f0; --c-insulin: #4cc493; --window: rgba(76,196,147,.10);
   --shadow: 0 1px 2px rgba(0,0,0,.4), 0 6px 20px rgba(0,0,0,.35); color-scheme: dark;
 }
 * { box-sizing: border-box; }
@@ -162,6 +167,30 @@ dialog::backdrop { background: rgba(10,15,12,.45); backdrop-filter: blur(3px); }
 .stage p { color: var(--text2); font-size: 0.97rem; }
 .card.spike { border-top: 4px solid var(--flame); }
 .card.steady { border-top: 4px solid var(--accent); }
+
+/* Body's-day chart */
+.daychart { gap: 16px; }
+.dc-legend { display: flex; flex-wrap: wrap; gap: 8px 18px; font-weight: 700; font-size: 0.92rem; }
+.dc-legend span { display: inline-flex; align-items: center; gap: 8px; }
+.dc-legend i { width: 18px; height: 4px; border-radius: 4px; display: inline-block; }
+.dc-legend small { font-weight: 500; color: var(--muted); }
+.dc-wrap { overflow-x: auto; }
+#dc-svg { width: 100%; min-width: 520px; height: auto; display: block; }
+#dc-svg text { fill: var(--muted); font-family: var(--font); font-size: 12px; }
+#dc-svg .grid-line { stroke: var(--line); stroke-width: 1; }
+#dc-svg .curve { fill: none; stroke-width: 3; stroke-linecap: round; stroke-linejoin: round; }
+#dc-svg .win { fill: var(--window); }
+#dc-svg .win-label { fill: var(--accent); font-weight: 700; }
+#dc-svg .meal { fill: var(--accent); }
+#dc-svg .cursor { stroke: var(--fg); stroke-width: 1.5; stroke-dasharray: 4 4; }
+#dc-svg .dot { stroke: var(--card); stroke-width: 2; }
+.dc-controls { display: flex; align-items: center; gap: 14px; flex-wrap: wrap; }
+.dc-slider { flex: 1 1 220px; display: flex; }
+.dc-slider input { width: 100%; accent-color: var(--accent); }
+.dc-clock { font-weight: 800; font-variant-numeric: tabular-nums; min-width: 6.5em; }
+.dc-caption { background: var(--surface); border-radius: 14px; padding: 14px 18px; display: grid; gap: 4px; min-height: 92px; }
+.dc-caption p { color: var(--text2); }
+.sr { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); }
 
 /* Contact form */
 .form { gap: 16px; }
@@ -405,7 +434,28 @@ footer .wrap { padding-block: 24px; display: grid; gap: 6px; font-size: 0.85rem;
     </div>
 
     <div class="block" data-pane="digest" hidden>
-      <h3 class="pane-title">What happens after you eat</h3>
+      <h3 class="pane-title">Your body's day</h3>
+      <p class="sub">Your body doesn't sit idle while it waits for food. Press play to watch four key signals rise and fall across a day with a noon-to-8&nbsp;PM eating window.</p>
+      <div class="card daychart">
+        <div class="dc-legend">
+          <span><i style="background:var(--c-cortisol)"></i>Cortisol <small>wake-up and energy</small></span>
+          <span><i style="background:var(--c-ghrelin)"></i>Ghrelin <small>hunger signal</small></span>
+          <span><i style="background:var(--c-sugar)"></i>Blood sugar</span>
+          <span><i style="background:var(--c-insulin)"></i>Insulin <small>stores the sugar</small></span>
+        </div>
+        <div class="dc-wrap">
+          <svg id="dc-svg" viewBox="0 0 760 330" role="img" aria-label="Illustration of cortisol, ghrelin, blood sugar and insulin across 24 hours. Cortisol peaks in the early morning, ghrelin rises before meals, and blood sugar and insulin rise after the noon and evening meals."></svg>
+        </div>
+        <div class="dc-controls">
+          <button class="btn primary" type="button" id="dc-play">Play the day</button>
+          <label class="dc-slider" for="dc-time"><span class="sr">Time of day</span><input id="dc-time" type="range" min="0" max="24" step="0.1" value="6.5"></label>
+          <span class="dc-clock" id="dc-clock">6:30 AM</span>
+        </div>
+        <div class="dc-caption" aria-live="polite"><strong id="dc-cap-title"></strong><p id="dc-cap-text"></p></div>
+        <p class="muted small">Illustration of typical patterns, not real measurements. Everyone's timing and levels differ.</p>
+      </div>
+
+      <h3 class="pane-title" style="margin-top:12px">What happens after you eat</h3>
     <p class="sub">Food is broken down into fuel. Here's the simple version of what your body does, hour by hour, from your last bite.</p>
     <div class="stages">
       <div class="stage"><span class="hrs">0–4 hrs</span><h4>Digesting</h4><p>Carbs become glucose (sugar), protein becomes amino acids, fat becomes fatty acids. Blood sugar rises, and insulin moves that sugar into your cells.</p></div>
@@ -857,6 +907,95 @@ joinForm.addEventListener("submit", async (e) => {
   }
 });
 renderMember();
+
+// Body's-day chart (illustrative curves)
+(function () {
+  const svg = document.getElementById("dc-svg");
+  if (!svg) return;
+  const NS = "http://www.w3.org/2000/svg";
+  const X0 = 46, X1 = 744, Y0 = 26, Y1 = 290;
+  const xs = h => X0 + (h / 24) * (X1 - X0);
+  const ys = v => Y1 - v * (Y1 - Y0);
+  const g = (t, m, w) => Math.exp(-((t - m) ** 2) / (2 * w * w));
+  const series = [
+    { key: "cortisol", color: "var(--c-cortisol)", f: t => 0.12 + 0.78 * g(t, 6.6, 2.0) + 0.1 * g(t, 12.5, 2.5) - 0.06 * g(t, 23, 2) },
+    { key: "ghrelin", color: "var(--c-ghrelin)", f: t => 0.22 + 0.22 * g(t, 8, 1.1) + 0.56 * g(t, 11.6, 0.8) + 0.5 * g(t, 18.6, 0.75) - 0.12 * g(t, 13.4, 0.9) - 0.1 * g(t, 20.4, 0.9) },
+    { key: "sugar", color: "var(--c-sugar)", f: t => 0.36 + 0.08 * g(t, 6.2, 1.2) + 0.34 * g(t, 12.8, 0.75) + 0.12 * g(t, 15.9, 0.6) + 0.3 * g(t, 19.8, 0.75) },
+    { key: "insulin", color: "var(--c-insulin)", f: t => 0.08 + 0.62 * g(t, 13.1, 0.85) + 0.18 * g(t, 16.1, 0.6) + 0.55 * g(t, 20.1, 0.85) }
+  ];
+  const el = (tag, attrs, parent = svg) => { const e = document.createElementNS(NS, tag); for (const k in attrs) e.setAttribute(k, attrs[k]); parent.appendChild(e); return e; };
+
+  // eating window 12:00 to 20:00
+  el("rect", { class: "win", x: xs(12), y: Y0, width: xs(20) - xs(12), height: Y1 - Y0, rx: 6 });
+  const wl = el("text", { class: "win-label", x: (xs(12) + xs(20)) / 2, y: Y0 + 16, "text-anchor": "middle" }); wl.textContent = "Eating window";
+  // grid + hour labels
+  ["12a", "3a", "6a", "9a", "12p", "3p", "6p", "9p", "12a"].forEach((lab, i) => {
+    const x = xs(i * 3);
+    el("line", { class: "grid-line", x1: x, x2: x, y1: Y0, y2: Y1 });
+    const t = el("text", { x, y: Y1 + 20, "text-anchor": "middle" }); t.textContent = lab;
+  });
+  el("line", { class: "grid-line", x1: X0, x2: X1, y1: Y1, y2: Y1 });
+  const yl = el("text", { x: 14, y: (Y0 + Y1) / 2, transform: `rotate(-90 14 ${(Y0 + Y1) / 2})`, "text-anchor": "middle" }); yl.textContent = "Higher →";
+  // meals
+  [[12, "Meal 1"], [15.5, "Snack"], [19, "Dinner"]].forEach(([h, lab]) => {
+    el("circle", { class: "meal", cx: xs(h), cy: Y1, r: 5 });
+    const t = el("text", { x: xs(h), y: Y1 - 10, "text-anchor": "middle" }); t.textContent = lab;
+  });
+  // curves
+  const dots = [];
+  series.forEach(s => {
+    let d = "";
+    for (let i = 0; i <= 240; i++) { const t = i / 10; d += (i ? "L" : "M") + xs(t).toFixed(1) + "," + ys(Math.min(1, Math.max(0, s.f(t)))).toFixed(1); }
+    el("path", { class: "curve", d, stroke: s.color });
+    dots.push(el("circle", { class: "dot", r: 6, fill: s.color }));
+  });
+  const cursor = el("line", { class: "cursor", y1: Y0, y2: Y1 });
+
+  const steps = [
+    [0, 4, "Overnight fast", "Insulin is low and your body runs on stored fuel while you sleep. Cortisol is at its quietest."],
+    [4, 8, "Wake-up surge", "Cortisol rises sharply before and after you wake. It releases stored sugar and fat for energy, which is why you can feel alert without breakfast."],
+    [8, 11, "The morning fast", "Ghrelin, your hunger hormone, comes in waves around times you usually eat, then fades if you don't. Hunger passes; it isn't an emergency."],
+    [11, 12.2, "Ready for food", "Ghrelin peaks just before your first meal. Your body is primed and waiting."],
+    [12.2, 14.5, "First meal lands", "Carbs turn into blood sugar. Insulin rises to move that sugar into your muscles and liver. Protein and fiber keep the rise gentle."],
+    [14.5, 18, "Afternoon", "Levels settle back down. A small snack gives a small bump. Steady meals mean steady energy."],
+    [18, 20.5, "Dinner", "Ghrelin rises again, then blood sugar and insulin climb after you eat. The eating window closes at 8 PM."],
+    [20.5, 24.01, "Wind-down", "Insulin falls, cortisol is low, and your body slips back into the overnight fast."]
+  ];
+  const range = document.getElementById("dc-time"), clock = document.getElementById("dc-clock");
+  const capT = document.getElementById("dc-cap-title"), capX = document.getElementById("dc-cap-text");
+  const fmt = h => { const hh = Math.floor(h) % 24, mm = Math.round((h - Math.floor(h)) * 60) % 60; const ap = hh < 12 ? "AM" : "PM"; const h12 = hh % 12 === 0 ? 12 : hh % 12; return h12 + ":" + String(mm).padStart(2, "0") + " " + ap; };
+  function setTime(h) {
+    h = Math.max(0, Math.min(24, h));
+    const x = xs(h);
+    cursor.setAttribute("x1", x); cursor.setAttribute("x2", x);
+    series.forEach((s, i) => { dots[i].setAttribute("cx", x); dots[i].setAttribute("cy", ys(Math.min(1, Math.max(0, s.f(h))))); });
+    clock.textContent = fmt(h >= 24 ? 23.99 : h);
+    const st = steps.find(s => h >= s[0] && h < s[1]) || steps[steps.length - 1];
+    capT.textContent = st[2]; capX.textContent = st[3];
+    range.value = h;
+  }
+  range.addEventListener("input", () => { stop(); setTime(parseFloat(range.value)); });
+  let raf = null, last = 0;
+  const play = document.getElementById("dc-play");
+  const reduce = window.matchMedia && matchMedia("(prefers-reduced-motion: reduce)").matches;
+  function stop() { if (raf) cancelAnimationFrame(raf); raf = null; play.textContent = "Play the day"; }
+  function tick(ts) {
+    const dt = last ? (ts - last) / 1000 : 0; last = ts;
+    let h = parseFloat(range.value) + dt * 1.6;   // about 15 seconds for the whole day
+    if (h >= 24) { setTime(24); stop(); return; }
+    setTime(h); raf = requestAnimationFrame(tick);
+  }
+  play.addEventListener("click", () => {
+    if (raf) { stop(); return; }
+    if (parseFloat(range.value) >= 23.9) setTime(0);
+    if (reduce) {   // step through without motion
+      const cur = parseFloat(range.value), next = steps.find(s => s[0] > cur + 0.01);
+      setTime(next ? next[0] + 0.01 : 0); return;
+    }
+    play.textContent = "Pause"; last = 0; raf = requestAnimationFrame(tick);
+  });
+  setTime(6.5);
+})();
 
 // Science sub-tabs
 document.querySelectorAll(".segmented [data-sub]").forEach(b => b.addEventListener("click", () => {
