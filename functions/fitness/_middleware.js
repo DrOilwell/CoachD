@@ -38,12 +38,13 @@ input{font:inherit;font-size:1.5rem;letter-spacing:.3em;text-align:center;paddin
 button{font:inherit;font-weight:700;padding:11px;border:0;border-radius:12px;background:var(--accent);color:var(--accent-ink);cursor:pointer}#m{color:var(--bad);font-weight:700;min-height:1.4em}
 </style></head><body><form id="f"><h1>Field Ready</h1><p>Enter your 6-digit passcode.</p><input id="c" type="password" inputmode="numeric" pattern="[0-9]*" maxlength="6" autocomplete="off" autofocus aria-label="Passcode"><button type="submit">Unlock</button><p id="m" role="status"></p></form>
 <script>
+try{if(sessionStorage.getItem('field-ready.open')==='1'){sessionStorage.removeItem('field-ready.open');document.getElementById('m').textContent='Your passcode was accepted, but this browser did not keep the sign-in. Open the link in Safari or Chrome with cookies allowed, not inside another app's browser.'}}catch(x){}
 const E=new TextEncoder(),H=u=>[...new Uint8Array(u)].map(b=>b.toString(16).padStart(2,'0')).join('');
 async function P(c,s){const k=await crypto.subtle.importKey('raw',E.encode(c),'PBKDF2',false,['deriveBits']);return H(await crypto.subtle.deriveBits({name:'PBKDF2',hash:'SHA-256',salt:E.encode(s),iterations:100000},k,256))}
-document.getElementById('f').addEventListener('submit',async e=>{e.preventDefault();const c=document.getElementById('c').value.trim(),m=document.getElementById('m');m.textContent='';
+document.getElementById('f').addEventListener('submit',async e=>{e.preventDefault();const c=document.getElementById('c').value.replace(/\\D/g,''),m=document.getElementById('m');m.textContent='';
  try{const r=await fetch('/fitness/unlock',{method:'POST',headers:{'content-type':'application/json'},body:JSON.stringify({code:c})});
   if(r.ok){const s=H(crypto.getRandomValues(new Uint8Array(16)));try{localStorage.setItem('field-ready.lock',JSON.stringify({s,h:await P(c,s)}));sessionStorage.setItem('field-ready.open','1')}catch(x){}location.replace('/fitness/');return}
-  m.textContent=r.status===429?'Too many tries. Try again in 15 minutes.':'That passcode is not right.'}catch(x){m.textContent='Connect to the internet to unlock on this device for the first time.'}
+  m.textContent=r.status===429?'Too many tries. Try again in 15 minutes.':r.status===401?'That passcode is not right.':'The site could not check the passcode (error '+r.status+'). Try again shortly.'}catch(x){m.textContent='Connect to the internet to unlock on this device for the first time.'}
  document.getElementById('c').value='';document.getElementById('c').focus()});
 </script></body></html>`;
 

@@ -605,13 +605,13 @@ function openApp(){ui.locked=false;try{sessionStorage.setItem(OPENKEY,'1')}catch
 function lockScreen(){ui.locked=true;
   document.getElementById('app').innerHTML=`<main class="lockwrap"><form id="lockf" class="panel stack lockbox"><h2 style="margin:0">Field Ready</h2><p class="small muted">Enter your 6-digit passcode.</p><input id="lockc" type="password" inputmode="numeric" pattern="[0-9]*" maxlength="6" autocomplete="off" aria-label="Passcode"><button class="btn primary" type="submit" style="justify-content:center">Unlock</button><p class="small" id="lockm" role="status" style="color:var(--bad);font-weight:700;min-height:1.4em"></p></form></main>`;
   const c=document.getElementById('lockc'),m=document.getElementById('lockm');c.focus();
-  document.getElementById('lockf').addEventListener('submit',async e=>{e.preventDefault();e.stopPropagation();const code=c.value.trim();c.value='';m.textContent='';
+  document.getElementById('lockf').addEventListener('submit',async e=>{e.preventDefault();e.stopPropagation();const code=c.value.replace(/\\D/g,'');c.value='';m.textContent='';
     const t=tries();if(t.u>Date.now()){m.textContent='Too many tries. Wait a moment and try again.';return}
     const v=getV();let ok=false;
     if(v){ok=await lhash(code,v.s)===v.h}
-    else{try{const r=await fetch('/fitness/unlock',{method:'POST',headers:{'content-type':'application/json'},body:JSON.stringify({code})});ok=r.ok;if(r.status===429){m.textContent='Too many tries. Try again in 15 minutes.';return}
+    if(!ok&&(!v||navigator.onLine)){try{const r=await fetch('/fitness/unlock',{method:'POST',headers:{'content-type':'application/json'},body:JSON.stringify({code})});ok=r.ok;if(r.status===429){m.textContent='Too many tries. Try again in 15 minutes.';return}if(!ok&&r.status!==401){m.textContent='The site could not check the passcode (error '+r.status+'). Try again shortly.';return}
         if(ok){const s=lhex(crypto.getRandomValues(new Uint8Array(16)));try{localStorage.setItem(LOCK,JSON.stringify({s,h:await lhash(code,s)}))}catch(x){}}}
-      catch(x){m.textContent='Connect to the internet to unlock on this device for the first time.';return}}
+      catch(x){if(!v){m.textContent='Connect to the internet to unlock on this device for the first time.';return}}}
     if(ok){setTries({n:0,u:0});openApp();return}
     const n=t.n+1;setTries(n>=5?{n:0,u:Date.now()+3e4}:{n,u:0});m.textContent=n>=5?'Too many tries. Wait 30 seconds and try again.':'That passcode is not right.';c.focus()});}
 let hiddenAt=0;

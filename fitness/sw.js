@@ -1,4 +1,4 @@
-const C='field-ready-ff155c4c32e6',FILES=['/fitness/','/fitness/manifest.webmanifest','/fitness/icon.png'];
+const C='field-ready-8ed863daa9d6',FILES=['/fitness/','/fitness/manifest.webmanifest','/fitness/icon.png'];
 const keep=async(c,u)=>{const r=await fetch(u,{cache:'no-store'});if(r.ok&&r.type==='basic'&&!r.redirected)await c.put(u,r.clone());return r};
 self.addEventListener('install',e=>{e.waitUntil((async()=>{const c=await caches.open(C);for(const f of FILES)await keep(c,f);self.skipWaiting()})())});
 self.addEventListener('activate',e=>{e.waitUntil((async()=>{for(const k of await caches.keys())if(k!==C&&k.startsWith('field-ready-'))await caches.delete(k);await self.clients.claim()})())});
