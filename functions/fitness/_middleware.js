@@ -1,10 +1,11 @@
 // Passcode gate for /fitness/. The passcode is checked on the server against a salted hash in D1,
 // with a lockout after repeated failures. It is never stored in this repository.
 
-const OPEN = new Set(["/fitness/sw.js", "/fitness/manifest.webmanifest", "/fitness/icon.png"]);
+import { PAGE, SW } from "./_app.js";
+
+const OPEN = new Set(["/fitness/manifest.webmanifest", "/fitness/icon.png"]);
 const COOKIE = "fr_gate";
 const DAYS = 30;
-const SITES = new Set(["https://www.nutriactivewellness.com", "https://nutriactivewellness.com"]);
 const enc = new TextEncoder();
 const hex = u => [...new Uint8Array(u)].map(b => b.toString(16).padStart(2, "0")).join("");
 
@@ -52,35 +53,34 @@ document.getElementById('f').addEventListener('submit',async e=>{e.preventDefaul
 export async function onRequest({ request, env, next }) {
   const url = new URL(request.url);
   if (OPEN.has(url.pathname)) return next();
+  if (url.pathname === "/fitness/sw.js") return new Response(SW, { headers: { "Content-Type": "text/javascript; charset=utf-8", "Cache-Control": "no-cache" } });
   const row = env.DB ? await env.DB.prepare("SELECT salt, hash, secret, fails, locked_until FROM fitness_gate WHERE id = 1").first() : null;
   if (!row) return new Response("This page is locked.", { status: 503, headers: { "Cache-Control": "no-store" } });
 
   if (url.pathname === "/fitness/unlock") {
     const origin = request.headers.get("Origin");
-    const site = SITES.has(origin);
-    const cors = site ? { "Access-Control-Allow-Origin": origin, Vary: "Origin" } : {};
-    if (request.method === "OPTIONS") {
-      if (!site) return new Response(null, { status: 403 });
-      return new Response(null, { status: 204, headers: { ...cors, "Access-Control-Allow-Methods": "POST", "Access-Control-Allow-Headers": "Content-Type", "Access-Control-Max-Age": "86400" } });
-    }
     if (request.method !== "POST") return json({ ok: false }, 405);
-    if (origin && !site && new URL(origin).host !== url.host) return json({ ok: false }, 403);
+    if (origin && new URL(origin).host !== url.host) return json({ ok: false }, 403);
     const now = Date.now();
-    if (row.locked_until > now) return json({ ok: false }, 429, cors);
+    if (row.locked_until > now) return json({ ok: false }, 429);
     let code = "";
     try { code = String((await request.json()).code || ""); } catch {}
     if (/^\d{6}$/.test(code) && same(await pbkdf2(code, row.salt), row.hash)) {
       await env.DB.prepare("UPDATE fitness_gate SET fails = 0, locked_until = 0 WHERE id = 1").run();
       const exp = String(now + DAYS * 864e5);
       const cookie = `${COOKIE}=${exp}.${await sign(exp, row.secret)}; Path=/fitness; Max-Age=${DAYS * 86400}; HttpOnly; Secure; SameSite=Lax`;
-      return json({ ok: true }, 200, { ...cors, "Set-Cookie": cookie });
+      return json({ ok: true }, 200, { "Set-Cookie": cookie });
     }
     const fails = row.fails + 1, lock = fails >= 5;
     await env.DB.prepare("UPDATE fitness_gate SET fails = ?1, locked_until = ?2 WHERE id = 1").bind(lock ? 0 : fails, lock ? now + 9e5 : 0).run();
-    return json({ ok: false }, lock ? 429 : 401, cors);
+    return json({ ok: false }, lock ? 429 : 401);
   }
 
   if (request.method !== "GET" && request.method !== "HEAD") return json({ ok: false }, 405);
-  if (await validCookie(request, row.secret)) return next();
+  if (await validCookie(request, row.secret)) {
+    if (url.pathname === "/fitness" || url.pathname === "/fitness/index.html") return Response.redirect(url.origin + "/fitness/", 302);
+    if (url.pathname === "/fitness/") return new Response(request.method === "HEAD" ? null : PAGE, { headers: { "Content-Type": "text/html; charset=utf-8", "Cache-Control": "no-cache", "X-Robots-Tag": "noindex", "X-Frame-Options": "DENY" } });
+    return next();
+  }
   return new Response(GATE, { status: 401, headers: { "Content-Type": "text/html; charset=utf-8", "Cache-Control": "no-store", "X-Robots-Tag": "noindex", "X-Frame-Options": "DENY" } });
 }
