@@ -120,6 +120,7 @@ svg.ch .ln{stroke:var(--accent);stroke-width:2.5;fill:none}
 svg.ch .pt{fill:var(--accent)}svg.ch .bar{fill:var(--accent)}svg.ch .end{fill:var(--coral)}
 svg.ch text.gt{fill:var(--good);font-weight:700}
 .legend{display:flex;gap:14px;flex-wrap:wrap;font-size:.78rem;color:var(--muted)}
+.lockwrap{min-height:100vh;display:grid;place-items:center;padding:16px}.lockbox{width:min(100%,340px)}.lockbox input{font-size:1.5rem;letter-spacing:.3em;text-align:center}
 .cp{text-align:center;color:var(--muted);font-size:.84rem;padding-top:10px}
 .toast{position:fixed;left:50%;transform:translateX(-50%);bottom:calc(18px + env(safe-area-inset-bottom,0px));background:var(--ink);color:var(--bg);padding:9px 16px;border-radius:9px;font-weight:700;font-size:.9rem;z-index:20;max-width:calc(100vw - 32px)}
 @media (max-width:860px){
@@ -543,6 +544,7 @@ function vBody(){
 const TABS=[['today','Today','M3,11L12,3L21,11M5,10V20H19V10'],['train','Train','M3,9V15M6,6V18M18,6V18M21,9V15M6,12H18'],['test','AFT','M12,3L20,6V12C20,17,16,20,12,21C8,20,4,17,4,12V6ZM8.5,12L11,14.5L15.5,9.5'],['mobility','Mobility','M12,3V21M12,7L7,9M12,7L17,9M12,12L7,14M12,12L17,14M12,17L8,19M12,17L16,19'],['body','Body','M4,20H20M6,20V13M11,20V8M16,20V11M20,4L14,8']];
 function themeLabel(){const r=document.documentElement.getAttribute('data-theme'),dark=r?r==='dark':matchMedia('(prefers-color-scheme:dark)').matches;return dark?'Light Mode':'Dark Mode'}
 function render(){
+  if(ui.locked)return;
   const views={today:vToday,train:vTrain,test:vTest,mobility:vBack,body:vBody};
   const fid=document.activeElement&&document.activeElement.id;
   document.getElementById('app').innerHTML=`<div class="app"><aside class="side"><div class="brand"><div><b>Field Ready</b><span>Fitness dashboard</span></div><button class="tbtn" type="button" data-a="theme">${themeLabel()}</button></div>
@@ -590,6 +592,30 @@ document.addEventListener('submit',e=>{const f=e.target,F=new FormData(f),t=f.da
 });
 setInterval(()=>{const a=S.active;if(!a)return;const el=document.getElementById('ftimer');if(!el)return;el.textContent=clock(Date.now()-a.start);const b=document.getElementById('fbar');if(b)b.style.width=Math.min(100,fastH({start:a.start})/S.cfg.fastH*100)+'%'},1000);
 try{const th=localStorage.getItem('field-ready.theme');if(th)document.documentElement.setAttribute('data-theme',th)}catch(e){}
-setTab(location.hash.slice(1)||'today');boot();
+
+const LOCK='field-ready.lock',OPENKEY='field-ready.open',TRIES='field-ready.tries',lenc=new TextEncoder();
+const lhex=u=>[...new Uint8Array(u)].map(b=>b.toString(16).padStart(2,'0')).join('');
+async function lhash(c,s){const k=await crypto.subtle.importKey('raw',lenc.encode(c),'PBKDF2',false,['deriveBits']);return lhex(await crypto.subtle.deriveBits({name:'PBKDF2',hash:'SHA-256',salt:lenc.encode(s),iterations:100000},k,256))}
+function isOpen(){try{return sessionStorage.getItem(OPENKEY)==='1'}catch(e){return false}}
+function getV(){try{return JSON.parse(localStorage.getItem(LOCK)||'null')}catch(e){return null}}
+function tries(){try{return JSON.parse(localStorage.getItem(TRIES)||'{"n":0,"u":0}')}catch(e){return{n:0,u:0}}}
+function setTries(t){try{localStorage.setItem(TRIES,JSON.stringify(t))}catch(e){}}
+let started=false;
+function openApp(){ui.locked=false;try{sessionStorage.setItem(OPENKEY,'1')}catch(e){}if(!started){started=true;setTab(location.hash.slice(1)||'today');boot()}else render()}
+function lockScreen(){ui.locked=true;
+  document.getElementById('app').innerHTML=`<main class="lockwrap"><form id="lockf" class="panel stack lockbox"><h2 style="margin:0">Field Ready</h2><p class="small muted">Enter your 6-digit passcode.</p><input id="lockc" type="password" inputmode="numeric" pattern="[0-9]*" maxlength="6" autocomplete="off" aria-label="Passcode"><button class="btn primary" type="submit" style="justify-content:center">Unlock</button><p class="small" id="lockm" role="status" style="color:var(--bad);font-weight:700;min-height:1.4em"></p></form></main>`;
+  const c=document.getElementById('lockc'),m=document.getElementById('lockm');c.focus();
+  document.getElementById('lockf').addEventListener('submit',async e=>{e.preventDefault();e.stopPropagation();const code=c.value.trim();c.value='';m.textContent='';
+    const t=tries();if(t.u>Date.now()){m.textContent='Too many tries. Wait a moment and try again.';return}
+    const v=getV();let ok=false;
+    if(v){ok=await lhash(code,v.s)===v.h}
+    else{try{const r=await fetch('/fitness/unlock',{method:'POST',headers:{'content-type':'application/json'},body:JSON.stringify({code})});ok=r.ok;if(r.status===429){m.textContent='Too many tries. Try again in 15 minutes.';return}
+        if(ok){const s=lhex(crypto.getRandomValues(new Uint8Array(16)));try{localStorage.setItem(LOCK,JSON.stringify({s,h:await lhash(code,s)}))}catch(x){}}}
+      catch(x){m.textContent='Connect to the internet to unlock on this device for the first time.';return}}
+    if(ok){setTries({n:0,u:0});openApp();return}
+    const n=t.n+1;setTries(n>=5?{n:0,u:Date.now()+3e4}:{n,u:0});m.textContent=n>=5?'Too many tries. Wait 30 seconds and try again.':'That passcode is not right.';c.focus()});}
+let hiddenAt=0;
+document.addEventListener('visibilitychange',()=>{if(document.visibilityState==='hidden'){hiddenAt=Date.now()}else if(hiddenAt&&Date.now()-hiddenAt>3e5&&!ui.locked){try{sessionStorage.removeItem(OPENKEY)}catch(e){}lockScreen()}});
+if(isOpen())openApp();else lockScreen();
 </script>
 </body></html>

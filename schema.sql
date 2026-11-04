@@ -87,3 +87,13 @@ CREATE TABLE IF NOT EXISTS fitness_state (
   data TEXT,
   updated_at TEXT
 );
+
+-- Passcode gate for /fitness/. Salted hash only; the passcode is not stored.
+CREATE TABLE IF NOT EXISTS fitness_gate (
+  id INTEGER PRIMARY KEY CHECK (id = 1),
+  salt TEXT NOT NULL,
+  hash TEXT NOT NULL,
+  secret TEXT NOT NULL,
+  fails INTEGER NOT NULL DEFAULT 0,
+  locked_until INTEGER NOT NULL DEFAULT 0
+);
