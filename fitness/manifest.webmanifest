@@ -1,0 +1,1 @@
+{"name": "Field Ready", "short_name": "Field Ready", "start_url": "/fitness/", "scope": "/fitness/", "display": "standalone", "background_color": "#f6f0e6", "theme_color": "#0b3a4a", "icons": [{"src": "/fitness/icon.png", "sizes": "512x512", "type": "image/png", "purpose": "any"}]}

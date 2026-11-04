@@ -79,3 +79,11 @@ CREATE TABLE IF NOT EXISTS testimonials (
 -- Approve one:          UPDATE testimonials SET approved = 1 WHERE id = 1;
 -- Hide one:             UPDATE testimonials SET approved = 0 WHERE id = 1;
 -- Delete one:           DELETE FROM testimonials WHERE id = 1;
+
+-- Field Ready fitness dashboard (/fitness/). One encrypted copy; only a hash of the sync token is stored.
+CREATE TABLE IF NOT EXISTS fitness_state (
+  id INTEGER PRIMARY KEY CHECK (id = 1),
+  token_hash TEXT NOT NULL,
+  data TEXT,
+  updated_at TEXT
+);
