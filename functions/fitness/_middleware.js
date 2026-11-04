@@ -4,6 +4,7 @@
 const OPEN = new Set(["/fitness/sw.js", "/fitness/manifest.webmanifest", "/fitness/icon.png"]);
 const COOKIE = "fr_gate";
 const DAYS = 30;
+const SITES = new Set(["https://www.nutriactivewellness.com", "https://nutriactivewellness.com"]);
 const enc = new TextEncoder();
 const hex = u => [...new Uint8Array(u)].map(b => b.toString(16).padStart(2, "0")).join("");
 
@@ -38,7 +39,7 @@ input{font:inherit;font-size:1.5rem;letter-spacing:.3em;text-align:center;paddin
 button{font:inherit;font-weight:700;padding:11px;border:0;border-radius:12px;background:var(--accent);color:var(--accent-ink);cursor:pointer}#m{color:var(--bad);font-weight:700;min-height:1.4em}
 </style></head><body><form id="f"><h1>Field Ready</h1><p>Enter your 6-digit passcode.</p><input id="c" type="password" inputmode="numeric" pattern="[0-9]*" maxlength="6" autocomplete="off" autofocus aria-label="Passcode"><button type="submit">Unlock</button><p id="m" role="status"></p></form>
 <script>
-try{if(sessionStorage.getItem('field-ready.open')==='1'){sessionStorage.removeItem('field-ready.open');document.getElementById('m').textContent='Your passcode was accepted, but this browser did not keep the sign-in. Open the link in Safari or Chrome with cookies allowed, not inside another app's browser.'}}catch(x){}
+try{if(sessionStorage.getItem('field-ready.open')==='1'){sessionStorage.removeItem('field-ready.open');document.getElementById('m').textContent='Your passcode was accepted, but this browser did not keep the sign-in. Open the link in Safari or Chrome with cookies allowed, not inside an in-app browser.'}}catch(x){}
 const E=new TextEncoder(),H=u=>[...new Uint8Array(u)].map(b=>b.toString(16).padStart(2,'0')).join('');
 async function P(c,s){const k=await crypto.subtle.importKey('raw',E.encode(c),'PBKDF2',false,['deriveBits']);return H(await crypto.subtle.deriveBits({name:'PBKDF2',hash:'SHA-256',salt:E.encode(s),iterations:100000},k,256))}
 document.getElementById('f').addEventListener('submit',async e=>{e.preventDefault();const c=document.getElementById('c').value.replace(/\\D/g,''),m=document.getElementById('m');m.textContent='';
@@ -55,22 +56,28 @@ export async function onRequest({ request, env, next }) {
   if (!row) return new Response("This page is locked.", { status: 503, headers: { "Cache-Control": "no-store" } });
 
   if (url.pathname === "/fitness/unlock") {
-    if (request.method !== "POST") return json({ ok: false }, 405);
     const origin = request.headers.get("Origin");
-    if (origin && new URL(origin).host !== url.host) return json({ ok: false }, 403);
+    const site = SITES.has(origin);
+    const cors = site ? { "Access-Control-Allow-Origin": origin, Vary: "Origin" } : {};
+    if (request.method === "OPTIONS") {
+      if (!site) return new Response(null, { status: 403 });
+      return new Response(null, { status: 204, headers: { ...cors, "Access-Control-Allow-Methods": "POST", "Access-Control-Allow-Headers": "Content-Type", "Access-Control-Max-Age": "86400" } });
+    }
+    if (request.method !== "POST") return json({ ok: false }, 405);
+    if (origin && !site && new URL(origin).host !== url.host) return json({ ok: false }, 403);
     const now = Date.now();
-    if (row.locked_until > now) return json({ ok: false }, 429);
+    if (row.locked_until > now) return json({ ok: false }, 429, cors);
     let code = "";
     try { code = String((await request.json()).code || ""); } catch {}
     if (/^\d{6}$/.test(code) && same(await pbkdf2(code, row.salt), row.hash)) {
       await env.DB.prepare("UPDATE fitness_gate SET fails = 0, locked_until = 0 WHERE id = 1").run();
       const exp = String(now + DAYS * 864e5);
       const cookie = `${COOKIE}=${exp}.${await sign(exp, row.secret)}; Path=/fitness; Max-Age=${DAYS * 86400}; HttpOnly; Secure; SameSite=Lax`;
-      return json({ ok: true }, 200, { "Set-Cookie": cookie });
+      return json({ ok: true }, 200, { ...cors, "Set-Cookie": cookie });
     }
     const fails = row.fails + 1, lock = fails >= 5;
     await env.DB.prepare("UPDATE fitness_gate SET fails = ?1, locked_until = ?2 WHERE id = 1").bind(lock ? 0 : fails, lock ? now + 9e5 : 0).run();
-    return json({ ok: false }, lock ? 429 : 401);
+    return json({ ok: false }, lock ? 429 : 401, cors);
   }
 
   if (request.method !== "GET" && request.method !== "HEAD") return json({ ok: false }, 405);

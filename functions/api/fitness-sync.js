@@ -4,10 +4,17 @@
 
 const MAX_BYTES = 1500000;
 
-function json(body, status = 200) {
+const SITES = new Set(["https://www.nutriactivewellness.com", "https://nutriactivewellness.com"]);
+
+function corsHeaders(request) {
+  const origin = request.headers.get("Origin");
+  return SITES.has(origin) ? { "Access-Control-Allow-Origin": origin, Vary: "Origin" } : {};
+}
+
+function json(body, status = 200, cors = {}) {
   return new Response(typeof body === "string" ? body : JSON.stringify(body), {
     status,
-    headers: { "Content-Type": "application/json", "Cache-Control": "no-store", "X-Robots-Tag": "noindex" },
+    headers: { "Content-Type": "application/json", "Cache-Control": "no-store", "X-Robots-Tag": "noindex", ...cors },
   });
 }
 
@@ -24,21 +31,26 @@ function same(a, b) {
 }
 
 export async function onRequest({ request, env }) {
-  if (request.method !== "GET" && request.method !== "PUT") return json({ error: "Method not allowed." }, 405);
-  if (!env.DB) return json({ error: "Database not connected." }, 500);
+  const cors = corsHeaders(request);
+  if (request.method === "OPTIONS") {
+    if (!cors["Access-Control-Allow-Origin"]) return new Response(null, { status: 403 });
+    return new Response(null, { status: 204, headers: { ...cors, "Access-Control-Allow-Methods": "GET, PUT", "Access-Control-Allow-Headers": "Authorization, Content-Type", "Access-Control-Max-Age": "86400" } });
+  }
+  if (request.method !== "GET" && request.method !== "PUT") return json({ error: "Method not allowed." }, 405, cors);
+  if (!env.DB) return json({ error: "Database not connected." }, 500, cors);
 
   const auth = request.headers.get("Authorization") || "";
   const token = auth.startsWith("Bearer ") ? auth.slice(7) : "";
   const row = await env.DB.prepare("SELECT token_hash, data FROM fitness_state WHERE id = 1").first();
-  if (!token || !row || !same(await sha256(token), row.token_hash)) return json({ error: "Not authorized." }, 401);
+  if (!token || !row || !same(await sha256(token), row.token_hash)) return json({ error: "Not authorized." }, 401, cors);
 
-  if (request.method === "GET") return row.data ? json(row.data) : json({ error: "None saved." }, 404);
+  if (request.method === "GET") return row.data ? json(row.data, 200, cors) : json({ error: "None saved." }, 404, cors);
 
   const body = await request.text();
-  if (new TextEncoder().encode(body).length > MAX_BYTES) return json({ error: "Too large." }, 413);
+  if (new TextEncoder().encode(body).length > MAX_BYTES) return json({ error: "Too large." }, 413, cors);
   let saved;
-  try { saved = JSON.parse(body); } catch { return json({ error: "Invalid JSON." }, 400); }
-  if (!saved || saved.v !== 1 || typeof saved.iv !== "string" || typeof saved.ct !== "string") return json({ error: "Not an encrypted save." }, 400);
+  try { saved = JSON.parse(body); } catch { return json({ error: "Invalid JSON." }, 400, cors); }
+  if (!saved || saved.v !== 1 || typeof saved.iv !== "string" || typeof saved.ct !== "string") return json({ error: "Not an encrypted save." }, 400, cors);
   await env.DB.prepare("UPDATE fitness_state SET data = ?1, updated_at = datetime('now') WHERE id = 1").bind(body).run();
-  return json({ ok: true });
+  return json({ ok: true }, 200, cors);
 }
